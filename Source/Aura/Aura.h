@@ -4,3 +4,5 @@
 
 #include "CoreMinimal.h"
 
+#define CURSOR_TRACE ECC_GameTraceChannel1
+
