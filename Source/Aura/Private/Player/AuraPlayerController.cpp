@@ -48,7 +48,7 @@ void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 
 	if (APawn* ControlledPawn = GetPawn<APawn>())
 	{
-		ControlledPawn->AddMovementInput(ForwardDirection, Value.X, false);
-		ControlledPawn->AddMovementInput(RightDirection, Value.Y, false);
+		ControlledPawn->AddMovementInput(ForwardDirection, Value.Y);
+		ControlledPawn->AddMovementInput(RightDirection, Value.X);
 	}
 }
