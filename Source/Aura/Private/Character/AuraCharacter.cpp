@@ -10,7 +10,7 @@
 AAuraCharacter::AAuraCharacter()
 {
 	// Create the Spring Arm Component.
-	SpringArm = CreateDefaultSubobject<USpringArmComponent>("SpringArm");
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>("CameraBoom");
 	SpringArm->SetupAttachment(GetRootComponent());
 	SpringArm->ProbeSize = 16.f;
 	SpringArm->bUsePawnControlRotation = true;
@@ -23,7 +23,7 @@ AAuraCharacter::AAuraCharacter()
 	SpringArm->CameraRotationLagSpeed = 10.f;
 
 	// Create the Camera Component.
-	Camera = CreateDefaultSubobject<UCameraComponent>("Camera");
+	Camera = CreateDefaultSubobject<UCameraComponent>("FollowCamera");
 	Camera->SetupAttachment(SpringArm);
 	Camera->bUsePawnControlRotation = false;
 	Camera->PostProcessSettings.MotionBlurAmount = 0.f;

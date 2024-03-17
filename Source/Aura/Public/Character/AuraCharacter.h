@@ -18,7 +18,7 @@ class AURA_API AAuraCharacter : public AAuraCharacterBase
 
 public:
 	AAuraCharacter();
-	
+
 	UPROPERTY(EditAnywhere, Category="Player|Camera")
 	TObjectPtr<USpringArmComponent> SpringArm;
 
