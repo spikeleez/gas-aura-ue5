@@ -15,7 +15,8 @@ AAuraCharacter::AAuraCharacter()
 	SpringArm->ProbeSize = 16.f;
 	SpringArm->bUsePawnControlRotation = true;
 	SpringArm->bInheritRoll = false;
-	SpringArm->TargetArmLength = 750.f;
+	SpringArm->bInheritPitch = false;
+	SpringArm->TargetArmLength = 1000.f;
 
 	SpringArm->bEnableCameraLag = true;
 	SpringArm->bEnableCameraRotationLag = true;
@@ -31,11 +32,13 @@ AAuraCharacter::AAuraCharacter()
 	Camera->PostProcessSettings.MotionBlurPerObjectSize = 0.f;
 	Camera->PostProcessSettings.MotionBlurTargetFPS = 0;
 
+	// Setup default character movement component properties.
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.f, MovementRotationRate, 0.f);
 	GetCharacterMovement()->bConstrainToPlane = true;
 	GetCharacterMovement()->bSnapToPlaneAtStart = true;
 
+	// Setup default pawn properties.
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationRoll = false;
 	bUseControllerRotationYaw = false;
