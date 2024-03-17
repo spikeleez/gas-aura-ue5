@@ -33,3 +33,10 @@ void AAuraEnemy::UnHighlightActor()
 	GetMesh()->SetRenderCustomDepth(bHighlighted);
 	Weapon->SetRenderCustomDepth(bHighlighted);
 }
+
+void AAuraEnemy::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	InitAbilityActorInfo();
+}
