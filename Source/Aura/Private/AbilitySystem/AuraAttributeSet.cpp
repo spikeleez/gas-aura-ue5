@@ -8,10 +8,10 @@
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
-	InitMaxHealth(100.f);
+	InitMaxHealth(1000.f);
 	InitMaxMana(100.f);
-	InitHealth(100.f);
-	InitMana(100.f);
+	InitHealth(50.f);
+	InitMana(75.f);
 }
 
 void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
