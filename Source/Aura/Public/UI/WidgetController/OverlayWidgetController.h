@@ -6,6 +6,7 @@
 #include "UI/WidgetController/AuraWidgetController.h"
 #include "OverlayWidgetController.generated.h"
 
+class UAuraMessageWidgetData;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature, float, NewValue);
 
 /**
@@ -31,6 +32,10 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category="AbilitySystem|Attributes|Mana")
 	FOnAttributeChangedSignature OnMaxManaChangedDelegate;
+
+protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Widget Data")
+	TObjectPtr<UAuraMessageWidgetData> MessageWidgetData;
 
 private:
 	void InitializeAttributeValues();
