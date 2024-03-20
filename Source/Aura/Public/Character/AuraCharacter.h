@@ -27,6 +27,10 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="Player|Camera")
 	TObjectPtr<UCameraComponent> Camera;
+	
+	/* Combat Interface */
+	virtual int32 GetCharacterLevel() override;
+	/* End Combat Interface */
 
 protected:
 	virtual void InitAbilityActorInfo() override;
