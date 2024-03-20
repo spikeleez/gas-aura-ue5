@@ -37,5 +37,5 @@ class AURA_API UAuraMessageWidgetData : public UDataAsset
 
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Message Data")
-	TArray<FAuraMessageData> MessageWidgetData;
+	TArray<FAuraMessageData> MessageData;
 };

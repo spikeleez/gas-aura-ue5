@@ -11,7 +11,7 @@ void UOverlayWidgetController::BroadcastInitialValues()
 	InitializeAttributeValues();
 }
 
-void UOverlayWidgetController::BindCallbacksToDependencies() const
+void UOverlayWidgetController::BindCallbacksToDependencies()
 {
 	const UAuraAttributeSet* AuraAttributeSet = CastChecked<UAuraAttributeSet>(AttributeSet);
 
@@ -48,18 +48,37 @@ void UOverlayWidgetController::BindCallbacksToDependencies() const
 	/* End Bind of Mana Attributes */
 
 	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda(
-		[](const FGameplayTagContainer& AssetTags)
+		[this](const FGameplayTagContainer& AssetTags)
 		{
-			for (const FGameplayTag Tag  : AssetTags)
+			for (const FGameplayTag Tag : AssetTags)
 			{
-				const FString Msg = FString::Printf(TEXT("GE Tag: %s"), *Tag.ToString());
-				GEngine->AddOnScreenDebugMessage(-1, 8.f, FColor::Blue, Msg);
+				if (Tag.MatchesTag(FindMessageDataIndexByTag(Tag).MessageTag))
+				{
+					OnReceiveMessageDataDelegate.Broadcast(FindMessageDataIndexByTag(Tag));
+				}
+				else
+				{
+					const FString Msg = FString::Printf(TEXT("Not found Tag: %s"), *Tag.ToString());
+					GEngine->AddOnScreenDebugMessage(-1, 8.f, FColor::Red, Msg);
+				}
 			}
 		}
 	);
 }
 
-void UOverlayWidgetController::InitializeAttributeValues()
+FAuraMessageData UOverlayWidgetController::FindMessageDataIndexByTag(const FGameplayTag Tag)
+{
+	for (const FAuraMessageData MessageData : MessageWidgetData->MessageData)
+	{
+		if (MessageData.MessageTag.MatchesTag(Tag))
+		{
+			return MessageData;
+		}
+	}
+	return FAuraMessageData();
+}
+
+void UOverlayWidgetController::InitializeAttributeValues() const
 {
 	const UAuraAttributeSet* AuraAttributeSet = CastChecked<UAuraAttributeSet>(AttributeSet);
 

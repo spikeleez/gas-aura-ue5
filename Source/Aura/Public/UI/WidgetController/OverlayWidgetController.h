@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "UI/WidgetController/AuraWidgetController.h"
+#include "Data/AuraMessageWidgetData.h"
 #include "OverlayWidgetController.generated.h"
 
-class UAuraMessageWidgetData;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature, float, NewValue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetDataSignature, FAuraMessageData, Data);
 
 /**
  * 
@@ -19,7 +20,7 @@ class AURA_API UOverlayWidgetController : public UAuraWidgetController
 
 public:
 	virtual void BroadcastInitialValues() override;
-	void BindCallbacksToDependencies() const;
+	void BindCallbacksToDependencies();
 
 	UPROPERTY(BlueprintAssignable, Category="AbilitySystem|Attributes|Health")
 	FOnAttributeChangedSignature OnHealthChangedDelegate;
@@ -33,10 +34,16 @@ public:
 	UPROPERTY(BlueprintAssignable, Category="AbilitySystem|Attributes|Mana")
 	FOnAttributeChangedSignature OnMaxManaChangedDelegate;
 
+	UPROPERTY(BlueprintAssignable, Category="Message Data")
+	FMessageWidgetDataSignature OnReceiveMessageDataDelegate;
+
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Widget Data")
 	TObjectPtr<UAuraMessageWidgetData> MessageWidgetData;
 
+	UFUNCTION(BlueprintCallable, Category="Widget Data")
+	FAuraMessageData FindMessageDataIndexByTag(const FGameplayTag Tag);
+
 private:
-	void InitializeAttributeValues();
+	void InitializeAttributeValues() const;
 };
