@@ -35,7 +35,7 @@ struct FAuraCharacterData_CharacterInfos
 	USkeletalMesh* CharacterMesh = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Infos")
-	USkeletalMesh* CharacterWeaponMesh = nullptr;
+	USkeletalMesh* WeaponMesh = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Infos")
 	UTexture2D* CharacterIcon = nullptr;

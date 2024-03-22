@@ -29,9 +29,9 @@ TSubclassOf<UAnimInstance> UAuraCharacterData::GetCharacterAnimClassData() const
 
 USkeletalMesh* UAuraCharacterData::GetWeaponMeshData() const
 {
-	if (CharacterInfos.CharacterWeaponMesh)
+	if (CharacterInfos.WeaponMesh)
 	{
-		return CharacterInfos.CharacterWeaponMesh;
+		return CharacterInfos.WeaponMesh;
 	}
 	return nullptr;
 }
