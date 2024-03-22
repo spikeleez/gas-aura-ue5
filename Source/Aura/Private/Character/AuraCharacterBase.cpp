@@ -5,6 +5,8 @@
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "AbilitySystem/AuraAbilitySystemLibrary.h"
+#include "Data/AuraCharacterData.h"
 
 AAuraCharacterBase::AAuraCharacterBase()
 {
@@ -13,6 +15,14 @@ AAuraCharacterBase::AAuraCharacterBase()
 	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>("Weapon");
 	Weapon->SetupAttachment(GetMesh(), FName("WeaponHandSocket"));
 	Weapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+}
+
+void AAuraCharacterBase::OnConstruction(const FTransform& Transform)
+{
+	Super::OnConstruction(Transform);
+
+	SetupCharacter(CharacterData);
+	SetupWeapon(CharacterData);
 }
 
 void AAuraCharacterBase::InitAbilityActorInfo()
@@ -30,6 +40,37 @@ void AAuraCharacterBase::InitAbilityActorInfo()
 	// Init Ability Actor Info.
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
+}
+
+void AAuraCharacterBase::InitializeDefaultAttributes() const
+{
+	UAuraAbilitySystemLibrary::GiveGrantedAttributes(this, CharacterData, AbilitySystemComponent);
+}
+
+void AAuraCharacterBase::InitializeDefaultAbilities() const
+{
+	UAuraAbilitySystemLibrary::GiveGrantedAbilities(this, CharacterData, AbilitySystemComponent);
+}
+
+void AAuraCharacterBase::SetupCharacter(UAuraCharacterData* Data)
+{
+	if (Data)
+	{
+		USkeletalMesh* CharMesh = Data->CharacterInfos.CharacterMesh;
+		const TSubclassOf<UAnimInstance> CharAnimClass = Data->CharacterInfos.CharacterAnimClass;
+
+		GetMesh()->SetSkeletalMeshAsset(CharMesh);
+		GetMesh()->SetAnimInstanceClass(CharAnimClass);
+	}
+}
+
+void AAuraCharacterBase::SetupWeapon(UAuraCharacterData* Data)
+{
+	if (Data)
+	{
+		USkeletalMesh* WeaponMesh = Data->CharacterInfos.CharacterWeaponMesh;
+		Weapon->SetSkeletalMeshAsset(WeaponMesh);
+	}
 }
 
 void AAuraCharacterBase::BeginPlay()

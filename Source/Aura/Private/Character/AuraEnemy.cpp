@@ -44,4 +44,8 @@ void AAuraEnemy::BeginPlay()
 	Super::BeginPlay();
 	
 	InitAbilityActorInfo();
+
+	// Initialize Default Attributes and Abilities
+	InitializeDefaultAttributes();
+	InitializeDefaultAbilities();
 }
