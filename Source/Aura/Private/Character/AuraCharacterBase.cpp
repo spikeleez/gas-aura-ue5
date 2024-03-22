@@ -56,11 +56,8 @@ void AAuraCharacterBase::SetupCharacter(UAuraCharacterData* Data) const
 {
 	if (Data)
 	{
-		USkeletalMesh* CharMesh = Data->CharacterInfos.CharacterMesh;
-		const TSubclassOf<UAnimInstance> CharAnimClass = Data->CharacterInfos.CharacterAnimClass;
-
-		GetMesh()->SetSkeletalMeshAsset(CharMesh);
-		GetMesh()->SetAnimInstanceClass(CharAnimClass);
+		GetMesh()->SetSkeletalMeshAsset(Data->GetCharacterMeshData());
+		GetMesh()->SetAnimInstanceClass(Data->GetCharacterAnimClassData());
 	}
 }
 
@@ -68,8 +65,7 @@ void AAuraCharacterBase::SetupWeapon(UAuraCharacterData* Data) const
 {
 	if (Data)
 	{
-		USkeletalMesh* WeaponMesh = Data->CharacterInfos.CharacterWeaponMesh;
-		Weapon->SetSkeletalMeshAsset(WeaponMesh);
+		Weapon->SetSkeletalMeshAsset(Data->GetWeaponMeshData());
 	}
 }
 

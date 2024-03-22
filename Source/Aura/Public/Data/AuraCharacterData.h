@@ -55,4 +55,11 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Character Ability Infos")
 	UAuraAbilitySetData* CharacterAbilitySet;
+
+	USkeletalMesh* GetCharacterMeshData() const;
+	EAuraCharacterClass GetCharacterClassData() const;
+	TSubclassOf<UAnimInstance> GetCharacterAnimClassData() const;
+	USkeletalMesh* GetWeaponMeshData() const;
+	UTexture2D* GetCharacterIconData() const;
+	FName GetCharacterNameData() const;
 };
