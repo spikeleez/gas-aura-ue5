@@ -52,7 +52,7 @@ void AAuraCharacterBase::InitializeDefaultAbilities() const
 	UAuraAbilitySystemLibrary::GiveGrantedAbilities(this, CharacterData, AbilitySystemComponent);
 }
 
-void AAuraCharacterBase::SetupCharacter(UAuraCharacterData* Data)
+void AAuraCharacterBase::SetupCharacter(UAuraCharacterData* Data) const
 {
 	if (Data)
 	{
@@ -64,7 +64,7 @@ void AAuraCharacterBase::SetupCharacter(UAuraCharacterData* Data)
 	}
 }
 
-void AAuraCharacterBase::SetupWeapon(UAuraCharacterData* Data)
+void AAuraCharacterBase::SetupWeapon(UAuraCharacterData* Data) const
 {
 	if (Data)
 	{

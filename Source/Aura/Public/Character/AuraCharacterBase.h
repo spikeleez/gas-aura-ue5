@@ -31,10 +31,10 @@ public:
 	void InitializeDefaultAbilities() const;
 
 	UFUNCTION(BlueprintCallable, Category="Character Data|Character")
-	void SetupCharacter(UAuraCharacterData* Data);
+	void SetupCharacter(UAuraCharacterData* Data) const;
 
 	UFUNCTION(BlueprintCallable, Category="Character Data|Weapon")
-	void SetupWeapon(UAuraCharacterData* Data);
+	void SetupWeapon(UAuraCharacterData* Data) const;
 protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo();
