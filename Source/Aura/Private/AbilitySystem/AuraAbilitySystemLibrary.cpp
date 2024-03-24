@@ -5,9 +5,13 @@
 
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "Data/AuraAbilitySetData.h"
+#include "Kismet/GameplayStatics.h"
+#include "Player/AuraPlayerState.h"
+#include "UI/HUD/AuraHUD.h"
+#include "UI/WidgetController/AuraWidgetController.h"
 
 void UAuraAbilitySystemLibrary::GiveGrantedAttributes(const UObject* WorldContext, const UAuraCharacterData* CharacterData,
-	UAbilitySystemComponent* ASC)
+                                                      UAbilitySystemComponent* ASC)
 {
 	const AActor* AvatarActor = ASC->GetAvatarActor();
 	check(AvatarActor);
@@ -39,4 +43,20 @@ void UAuraAbilitySystemLibrary::GiveGrantedAbilities(const UObject* WorldContext
 	}
 
 	// TODO: Tag RelationShip Logic Here!
+}
+
+UOverlayWidgetController* UAuraAbilitySystemLibrary::GetOverlayWidgetController(const UObject* WorldContext)
+{
+	if (APlayerController* PC = UGameplayStatics::GetPlayerController(WorldContext, 0))
+	{
+		if (AAuraHUD* AuraHUD = Cast<AAuraHUD>(PC->GetHUD()))
+		{
+			AAuraPlayerState* PS = PC->GetPlayerState<AAuraPlayerState>();
+			UAbilitySystemComponent* ASC = PS->GetAbilitySystemComponent();
+			UAttributeSet* AS = PS->GetAttributeSet();
+			const FWidgetControllerParams WidgetControllerParams(PC, PS, ASC, AS);
+			return AuraHUD->GetOverlayWidgetController(WidgetControllerParams);
+		}
+	}
+	return nullptr;
 }

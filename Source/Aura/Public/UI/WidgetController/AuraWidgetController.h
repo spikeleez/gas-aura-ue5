@@ -42,7 +42,9 @@ class AURA_API UAuraWidgetController : public UObject
 public:
 	UFUNCTION(BlueprintCallable, Category="Widget Controller")
 	void SetWidgetControllerParams(const FWidgetControllerParams& WCParams);
+	
 	virtual void BroadcastInitialValues();
+	virtual void BindCallbacksToDependencies();
 	
 protected:
 	UPROPERTY(BlueprintReadOnly, Category="Widget Controller|Player")
