@@ -38,7 +38,7 @@ public:
 	FMessageWidgetDataSignature OnReceiveMessageDataDelegate;
 
 protected:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Widget Data")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<UAuraMessageWidgetData> MessageWidgetData;
 
 	UFUNCTION(BlueprintCallable, Category="Widget Data")

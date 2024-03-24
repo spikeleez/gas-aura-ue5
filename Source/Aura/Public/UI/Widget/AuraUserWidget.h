@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "GameplayTags.h"
 #include "AuraUserWidget.generated.h"
 
 /**
@@ -20,6 +21,9 @@ public:
 	
 	UPROPERTY(BlueprintReadOnly, Category="Widget Controller")
 	TObjectPtr<UObject> WidgetController;
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Testable")
+	FString GetAttributeNameByTag(const FGameplayTag& Tag);
 
 protected:
 	UFUNCTION(BlueprintImplementableEvent)
