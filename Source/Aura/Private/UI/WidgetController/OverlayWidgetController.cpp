@@ -17,53 +17,49 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 
 	/* Bind Health Attributes */
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAttributeSet->GetHealthAttribute()).AddLambda(
-		[this](const FOnAttributeChangeData& Data)
-		{
-			OnHealthChangedDelegate.Broadcast(Data.NewValue);
-		}
-	);
+	[this](const FOnAttributeChangeData& Data)
+	{
+		OnHealthChangedDelegate.Broadcast(Data.NewValue);
+	});
 
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAttributeSet->GetMaxHealthAttribute()).AddLambda(
-		[this](const FOnAttributeChangeData& Data)
-		{
-			OnMaxHealthChangedDelegate.Broadcast(Data.NewValue);
-		}
-	);
+	[this](const FOnAttributeChangeData& Data)
+	{
+		OnMaxHealthChangedDelegate.Broadcast(Data.NewValue);
+	});
 	/* End Bind of Health Attributes */
 
 	/* Bind Mana Attributes */
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAttributeSet->GetManaAttribute()).AddLambda(
-		[this](const FOnAttributeChangeData& Data)
-		{
-			OnManaChangedDelegate.Broadcast(Data.NewValue);
-		}
-	);
+	[this](const FOnAttributeChangeData& Data)
+	{
+		OnManaChangedDelegate.Broadcast(Data.NewValue);
+	});
 
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAttributeSet->GetMaxManaAttribute()).AddLambda(
-		[this](const FOnAttributeChangeData& Data)
-		{
-			OnMaxManaChangedDelegate.Broadcast(Data.NewValue);
-		}
-	);
+	[this](const FOnAttributeChangeData& Data)
+	{
+		OnMaxManaChangedDelegate.Broadcast(Data.NewValue);
+	});
+	
 	/* End Bind of Mana Attributes */
 
 	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda(
-		[this](const FGameplayTagContainer& AssetTags)
+	[this](const FGameplayTagContainer& AssetTags)
+	{
+		for (const FGameplayTag Tag : AssetTags)
 		{
-			for (const FGameplayTag Tag : AssetTags)
+			if (Tag.MatchesTag(FindMessageDataIndexByTag(Tag).MessageTag))
 			{
-				if (Tag.MatchesTag(FindMessageDataIndexByTag(Tag).MessageTag))
-				{
-					OnReceiveMessageDataDelegate.Broadcast(FindMessageDataIndexByTag(Tag));
-				}
-				else
-				{
-					const FString Msg = FString::Printf(TEXT("Not found Tag: %s"), *Tag.ToString());
-					GEngine->AddOnScreenDebugMessage(-1, 8.f, FColor::Red, Msg);
-				}
+				OnReceiveMessageDataDelegate.Broadcast(FindMessageDataIndexByTag(Tag));
+			}
+			else
+			{
+				const FString Msg = FString::Printf(TEXT("Not found Tag: %s"), *Tag.ToString());
+				GEngine->AddOnScreenDebugMessage(-1, 8.f, FColor::Red, Msg);
 			}
 		}
-	);
+	});
 }
 
 FAuraMessageData UOverlayWidgetController::FindMessageDataIndexByTag(const FGameplayTag Tag)

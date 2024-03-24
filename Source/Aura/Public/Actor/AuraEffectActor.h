@@ -34,8 +34,6 @@ public:
 	AAuraEffectActor();
 
 protected:
-	virtual void BeginPlay() override;
-
 	UFUNCTION(BlueprintCallable, Category="Gameplay Effects|Effect")
 	void ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGameplayEffect> GameplayEffectClass);
 
@@ -48,7 +46,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gameplay Effects")
 	bool bDestroyOnEffectRemoval = false;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Gameplay Effects|Instant Gameplay Effect")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gameplay Effects|Instant Gameplay Effect")
 	TSubclassOf<UGameplayEffect> InstantGameplayEffectClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gameplay Effects|Instant Gameplay Effect")
