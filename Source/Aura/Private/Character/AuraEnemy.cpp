@@ -42,10 +42,7 @@ int32 AAuraEnemy::GetCharacterLevel()
 void AAuraEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	InitAbilityActorInfo();
 
-	// Initialize Default Attributes and Abilities
-	InitializeDefaultAttributes();
-	InitializeDefaultAbilities();
+	// Initialize Ability Actor Info - Full Function for the Enemies.
+	InitAbilityActorInfo();
 }

@@ -55,6 +55,10 @@ void AAuraCharacter::PossessedBy(AController* NewController)
 
 	// Init Ability Actor Info for the Server.
 	InitAbilityActorInfo();
+
+	// Initialize Default Attributes and Abilities
+	InitializeDefaultAttributes();
+	InitializeDefaultAbilities();
 }
 
 void AAuraCharacter::OnRep_PlayerState()
@@ -92,8 +96,4 @@ void AAuraCharacter::InitAbilityActorInfo()
 			AuraHUD->InitOverlay(AuraPlayerController, AuraPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
-
-	// Initialize Default Attributes and Abilities
-	InitializeDefaultAttributes();
-	InitializeDefaultAbilities();
 }

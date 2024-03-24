@@ -40,15 +40,21 @@ void AAuraCharacterBase::InitAbilityActorInfo()
 	// Init Ability Actor Info.
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
+
+	// Initialize Default Attributes (Only Enemies and NPCs). You can override this function for players.
+	InitializeDefaultAbilities();
+	InitializeDefaultAttributes();
 }
 
 void AAuraCharacterBase::InitializeDefaultAttributes() const
 {
+	if (!HasAuthority()) return;
 	UAuraAbilitySystemLibrary::GiveGrantedAttributes(this, CharacterData, AbilitySystemComponent);
 }
 
 void AAuraCharacterBase::InitializeDefaultAbilities() const
 {
+	if (!HasAuthority()) return;
 	UAuraAbilitySystemLibrary::GiveGrantedAbilities(this, CharacterData, AbilitySystemComponent);
 }
 
