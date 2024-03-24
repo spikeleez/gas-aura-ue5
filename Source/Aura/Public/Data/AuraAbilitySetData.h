@@ -46,6 +46,6 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="Gameplay Effects", meta=(TitleProperty=GameplayEffect))
 	TArray<FAuraAbilitySetData_GameplayEffect> GrantedGameplayEffects;
 	
-	UPROPERTY(EditDefaultsOnly, Category="Gameplay Abilities", meta=(TitleProperty=Ability))
+	UPROPERTY(EditDefaultsOnly, Category="Gameplay Abilities", meta=(TitleProperty=GameplayAbility))
 	TArray<FAuraAbilitySetData_GameplayAbility> GrantedGameplayAbilities;
 };
