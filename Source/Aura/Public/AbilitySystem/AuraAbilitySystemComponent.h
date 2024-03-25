@@ -28,7 +28,9 @@ public:
 	void ClearAbilityInput();
 
 protected:
-	void EffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle);
+	UFUNCTION(Client, Reliable)
+	void ClientEffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle);
+
 	virtual void AbilitySpecInputPressed(FGameplayAbilitySpec& Spec) override;
 	virtual void AbilitySpecInputReleased(FGameplayAbilitySpec& Spec) override;
 

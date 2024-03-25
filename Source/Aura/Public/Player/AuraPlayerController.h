@@ -31,22 +31,17 @@ protected:
 	virtual void PostProcessInput(const float DeltaTime, const bool bGamePaused) override;
 
 private:
-	UPROPERTY(EditAnywhere, Category="Input")
-	TObjectPtr<UInputMappingContext> AuraContext;
-
-	UPROPERTY(EditAnywhere, Category="Input")
-	TObjectPtr<UInputAction> MoveAction;
-	
-	void Move(const FInputActionValue& InputActionValue);
-
-	void CursorTrace();
-	
-	IEnemyInterface* LastActor = nullptr;
-	IEnemyInterface* ThisActor = nullptr;
-
 	void AbilityInputTagPressed(FGameplayTag InputTag);
 	void AbilityInputTagReleased(FGameplayTag InputTag);
 	void AbilityInputTagHeld(FGameplayTag InputTag);
+	
+	void Move(const FInputActionValue& InputActionValue);
+	
+	void ClickToMove(const FGameplayTag& InputTag, const bool bInputPressed);
+	void AutoRun();
+
+	void CursorTrace();
+	UAuraAbilitySystemComponent* GetASC();
 
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UAuraInputData> InputData;
@@ -54,8 +49,17 @@ private:
 	UPROPERTY()
 	TObjectPtr<UAuraAbilitySystemComponent> AuraAbilitySystemComponent;
 	
-	UAuraAbilitySystemComponent* GetASC();
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputMappingContext> AuraContext;
 
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction> MoveAction;
+	
+	IEnemyInterface* LastActor = nullptr;
+	IEnemyInterface* ThisActor = nullptr;
+	FHitResult CursorHit;
+
+	/* Click to Move */
 	FVector CachedDestination = FVector::ZeroVector;
 	float FollowTime = 0.f;
 	float ShortPressThreshold = 0.5f;
@@ -67,6 +71,5 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USplineComponent> Spline;
-
-	void ClickToMove(const FGameplayTag& InputTag, const bool bAutoRun);
+	/* End Click to Move */
 };
