@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "AuraWidgetController.generated.h"
 
+class UAuraAttributeData;
 class UAttributeSet;
 class UAbilitySystemComponent;
 

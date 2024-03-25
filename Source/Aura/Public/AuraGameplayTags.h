@@ -25,7 +25,6 @@ FString(Description));
 
 struct FAuraGameplayTags
 {
-public:
  static const FAuraGameplayTags& Get() { return GameplayTags; }
  static void InitializeNativeGameplayTags();
 
@@ -50,8 +49,14 @@ public:
  /* Vital Attribute Tags */
  inline CREATE_NATIVE_TAG(Attributes_Vital_Health, "Amount of Health.");
  inline CREATE_NATIVE_TAG(Attributes_Vital_Mana, "Amount of Mana.");
- 
-protected:
+
+ /* Input Tags */
+ inline CREATE_NATIVE_TAG(InputTag_LMB, "Input Tag for Left Mouse Button");
+ inline CREATE_NATIVE_TAG(InputTag_RMB, "Input Tag for Right Mouse Button");
+ inline CREATE_NATIVE_TAG(InputTag_1, "Input Tag for 1 Key");
+ inline CREATE_NATIVE_TAG(InputTag_2, "Input Tag for 2 Key");
+ inline CREATE_NATIVE_TAG(InputTag_3, "Input Tag for 3 Key");
+ inline CREATE_NATIVE_TAG(InputTag_4, "Input Tag for 4 Key");
 
 private:
  static FAuraGameplayTags GameplayTags;

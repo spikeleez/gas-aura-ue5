@@ -22,7 +22,8 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category="Widget Controller")
 	TObjectPtr<UObject> WidgetController;
 
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Testable")
+	// Debug Only
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="AbilitySystem|Attributes")
 	FString GetAttributeNameByTag(const FGameplayTag& Tag);
 
 protected:

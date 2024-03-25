@@ -19,8 +19,8 @@ void UAuraUserWidget::SetWidgetController(UObject* InWidgetController)
 FString UAuraUserWidget::GetAttributeNameByTag(const FGameplayTag& Tag)
 {
 	const FString TagString = Tag.GetTagName().ToString();
-
 	int32 Index;
+	
 	if (TagString.FindLastChar('.', Index))
 	{
 		FString AttributeName = TagString.RightChop(Index + 1);
