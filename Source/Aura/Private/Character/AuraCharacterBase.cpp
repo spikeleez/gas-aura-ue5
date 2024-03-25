@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
+#include "Aura/Aura.h"
 #include "Data/AuraCharacterData.h"
 
 AAuraCharacterBase::AAuraCharacterBase()
