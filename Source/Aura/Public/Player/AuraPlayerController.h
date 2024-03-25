@@ -12,6 +12,7 @@ class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
 class IEnemyInterface;
+class UAuraAbilitySystemComponent;
 
 UCLASS()
 class AURA_API AAuraPlayerController : public APlayerController
@@ -26,6 +27,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
+	virtual void PostProcessInput(const float DeltaTime, const bool bGamePaused) override;
 
 private:
 	UPROPERTY(EditAnywhere, Category="Input")
@@ -47,4 +49,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UAuraInputData> InputData;
+
+	UPROPERTY()
+	TObjectPtr<UAuraAbilitySystemComponent> AuraAbilitySystemComponent;
+	
+	UAuraAbilitySystemComponent* GetASC();
 };

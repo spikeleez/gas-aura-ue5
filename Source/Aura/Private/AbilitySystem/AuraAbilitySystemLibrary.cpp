@@ -11,20 +11,24 @@
 #include "UI/WidgetController/AuraWidgetController.h"
 
 void UAuraAbilitySystemLibrary::GiveGrantedAttributes(const UObject* WorldContext, const UAuraCharacterData* CharacterData,
-                                                      UAbilitySystemComponent* ASC)
+	UAbilitySystemComponent* ASC)
 {
 	const AActor* AvatarActor = ASC->GetAvatarActor();
 	check(AvatarActor);
 	check(ASC);
+	check(CharacterData);
 
-	for (const FAuraAbilitySetData_GameplayEffect& GameplayEffects : CharacterData->CharacterAbilitySet->GrantedGameplayEffects)
+	if (const UAuraAbilitySetData* AbilitySet = Cast<UAuraAbilitySetData>(CharacterData->CharacterAbilitySet))
 	{
-		FGameplayEffectContextHandle EffectContextHandle = ASC->MakeEffectContext();
-		EffectContextHandle.AddSourceObject(AvatarActor);
-		const FGameplayEffectSpecHandle EffectSpecHandle = ASC->MakeOutgoingSpec(
-			GameplayEffects.GameplayEffect, GameplayEffects.EffectLevel, EffectContextHandle);
-		
-		ASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
+		for (const FAuraAbilitySetData_GameplayEffect& GameplayEffects : AbilitySet->GrantedGameplayEffects)
+		{
+			FGameplayEffectContextHandle EffectContextHandle = ASC->MakeEffectContext();
+			EffectContextHandle.AddSourceObject(AvatarActor);
+			const FGameplayEffectSpecHandle EffectSpecHandle = ASC->MakeOutgoingSpec(
+				GameplayEffects.GameplayEffect, GameplayEffects.EffectLevel, EffectContextHandle);
+
+			ASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
+		}
 	}
 }
 
@@ -32,17 +36,18 @@ void UAuraAbilitySystemLibrary::GiveGrantedAbilities(const UObject* WorldContext
 	UAbilitySystemComponent* ASC)
 {
 	check(ASC);
-	for (const FAuraAbilitySetData_GameplayAbility& GameplayAbilities : CharacterData->CharacterAbilitySet->GrantedGameplayAbilities)
-	{
-		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(
-			GameplayAbilities.GameplayAbility, GameplayAbilities.AbilityLevel);
-		
-		// TODO: Add Gameplay Input tag to Ability System
-		//AbilitySpec.DynamicAbilityTags.AddTag(GameplayAbilities.InputTag);
-		ASC->GiveAbility(AbilitySpec);
-	}
+	check(CharacterData);
 
-	// TODO: Tag RelationShip Logic Here!
+	if (const UAuraAbilitySetData* AbilitySet = Cast<UAuraAbilitySetData>(CharacterData->CharacterAbilitySet))
+	{
+		for (const FAuraAbilitySetData_GameplayAbility& GameplayAbilities : AbilitySet->GrantedGameplayAbilities)
+		{
+			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(GameplayAbilities.GameplayAbility, GameplayAbilities.AbilityLevel);
+			AbilitySpec.DynamicAbilityTags.AddTag(GameplayAbilities.AbilityTag);
+			ASC->GiveAbility(AbilitySpec);
+		}
+		// TODO: Tag RelationShip Logic Here!
+	}
 }
 
 UOverlayWidgetController* UAuraAbilitySystemLibrary::GetOverlayWidgetController(const UObject* WorldContext)

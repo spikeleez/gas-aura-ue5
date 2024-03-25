@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Engine/DataAsset.h"
+#include "GameplayTags.h"
 #include "AuraAbilitySetData.generated.h"
 
 class UAttributeSet;
@@ -14,10 +15,10 @@ struct FAuraAbilitySetData_GameplayEffect
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSubclassOf<UGameplayEffect> GameplayEffect = nullptr;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	float EffectLevel = 1.f;
 };
 
@@ -26,13 +27,14 @@ struct FAuraAbilitySetData_GameplayAbility
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSubclassOf<UGameplayAbility> GameplayAbility = nullptr;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	int32 AbilityLevel = 1;
 
-	// TODO: Add Input Tag Here!
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FGameplayTag AbilityTag = FGameplayTag();
 };
 /**
  * 
