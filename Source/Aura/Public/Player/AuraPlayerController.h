@@ -67,4 +67,6 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USplineComponent> Spline;
+
+	void ClickToMove(const FGameplayTag& InputTag, const bool bAutoRun);
 };
