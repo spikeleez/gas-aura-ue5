@@ -36,7 +36,7 @@ void AAuraCharacterBase::InitAbilityActorInfo()
 	 */
 
 	// Optional check.
-	check(AbilitySystemComponent);
+	//check(AbilitySystemComponent);
 
 	// Init Ability Actor Info.
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
