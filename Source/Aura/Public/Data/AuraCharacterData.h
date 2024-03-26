@@ -18,27 +18,39 @@ enum class EAuraCharacterClass : uint8
 };
 
 USTRUCT(BlueprintType)
+struct FAuraCharacterData_WeaponInfos
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	USkeletalMesh* WeaponMesh = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FName WeaponSocket = "TipSocket";
+};
+
+USTRUCT(BlueprintType)
 struct FAuraCharacterData_CharacterInfos
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Infos")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FName CharacterName = "Character Name";
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Infos")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	EAuraCharacterClass CharacterClass = EAuraCharacterClass::Warrior;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Infos")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSubclassOf<UAnimInstance> CharacterAnimClass = nullptr;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Infos")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	USkeletalMesh* CharacterMesh = nullptr;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Infos")
-	USkeletalMesh* WeaponMesh = nullptr;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Infos")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UTexture2D* CharacterIcon = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FAuraCharacterData_WeaponInfos WeaponInfos;
 };
 
 /**
@@ -62,4 +74,5 @@ public:
 	USkeletalMesh* GetWeaponMeshData() const;
 	UTexture2D* GetCharacterIconData() const;
 	FName GetCharacterNameData() const;
+	FAuraCharacterData_WeaponInfos GetCharacterWeaponInfos() const;
 };

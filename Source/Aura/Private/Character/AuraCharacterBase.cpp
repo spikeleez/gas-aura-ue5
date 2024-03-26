@@ -47,6 +47,13 @@ void AAuraCharacterBase::InitAbilityActorInfo()
 	InitializeDefaultAttributes();
 }
 
+FVector AAuraCharacterBase::GetCombatSocketLocation()
+{
+	check(Weapon);
+	check(CharacterData);
+	return Weapon->GetSocketLocation(CharacterData->GetCharacterWeaponInfos().WeaponSocket);
+}
+
 void AAuraCharacterBase::InitializeDefaultAttributes() const
 {
 	if (!HasAuthority()) return;
