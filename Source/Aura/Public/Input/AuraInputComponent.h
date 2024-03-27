@@ -16,10 +16,27 @@ class AURA_API UAuraInputComponent : public UEnhancedInputComponent
 	GENERATED_BODY()
 
 public:
+	template<class UserClass, typename FuncType>
+	void BindNativeAction(const UAuraInputData* InputData, const FGameplayTag& InputTag, ETriggerEvent TriggerEvent,
+		UserClass* Object, FuncType Func, bool bLogIfNotFound = false);
+	
 	template<class UserClass, typename PressedFuncType, typename ReleasedFuncType, typename HeldFuncType>
 	void BindAbilityActions(const UAuraInputData* InputData, UserClass* Object, PressedFuncType PressedFunc,
 		ReleasedFuncType ReleasedFunc, HeldFuncType HeldFunc);
 };
+
+template <class UserClass, typename FuncType>
+void UAuraInputComponent::BindNativeAction(const UAuraInputData* InputData, const FGameplayTag& InputTag,
+	ETriggerEvent TriggerEvent, UserClass* Object, FuncType Func, bool bLogIfNotFound)
+{
+	check(InputData);
+
+	// TODO: We can just replicate what BindAbilityActions does, and use just one BindNativeActions instead of passing one to each Event Trigger
+	if (const UInputAction* InputAction = InputData->FindNativeInputActionForTag(InputTag, bLogIfNotFound))
+	{
+		BindAction(InputAction, TriggerEvent, Object, Func);
+	}
+}
 
 template <class UserClass, typename PressedFuncType, typename ReleasedFuncType, typename HeldFuncType>
 void UAuraInputComponent::BindAbilityActions(const UAuraInputData* InputData, UserClass* Object,
@@ -27,7 +44,7 @@ void UAuraInputComponent::BindAbilityActions(const UAuraInputData* InputData, Us
 {
 	check(InputData);
 
-	for (const FAuraInputAction& Action : InputData->AbilityInputActions)
+	for (const FAuraInputData_AbilityInputActions& Action : InputData->AbilityInputActions)
 	{
 		if (Action.InputAction && Action.InputTag.IsValid())
 		{

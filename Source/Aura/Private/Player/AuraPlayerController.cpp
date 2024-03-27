@@ -51,8 +51,17 @@ void AAuraPlayerController::SetupInputComponent()
 	Super::SetupInputComponent();
 
 	UAuraInputComponent* AuraInputComponent = CastChecked<UAuraInputComponent>(InputComponent);
-	AuraInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AAuraPlayerController::Move);
-	AuraInputComponent->BindAbilityActions(InputData, this,&ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
+
+	/** Bind Native Actions - (Pressed) */
+	AuraInputComponent->BindNativeAction(InputData, FAuraGameplayTags::Input_Native_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
+	AuraInputComponent->BindNativeAction(InputData, FAuraGameplayTags::Input_Native_Shift, ETriggerEvent::Triggered, this, &ThisClass::Input_ShiftPressed);
+	
+	/** Bind Native Actions - (Released) */
+	AuraInputComponent->BindNativeAction(InputData, FAuraGameplayTags::Input_Native_Move, ETriggerEvent::Completed, this, &ThisClass::Input_Move);
+	AuraInputComponent->BindNativeAction(InputData, FAuraGameplayTags::Input_Native_Shift, ETriggerEvent::Completed, this, &ThisClass::Input_ShiftReleased);
+	
+	/** Bind Ability Actions */
+	AuraInputComponent->BindAbilityActions(InputData, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
 }
 
 void AAuraPlayerController::PostProcessInput(const float DeltaTime, const bool bGamePaused)
@@ -65,7 +74,7 @@ void AAuraPlayerController::PostProcessInput(const float DeltaTime, const bool b
 
 void AAuraPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
-	if (InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_RMB))
+	if (InputTag.MatchesTagExact(FAuraGameplayTags::Get().Input_Ability_RMB))
 	{
 		bTargeting = ThisActor ? true : false;
 		bAutoRunning = false;
@@ -82,7 +91,7 @@ void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 	ClickToMove(InputTag, true);
 }
 
-void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
+void AAuraPlayerController::Input_Move(const FInputActionValue& InputActionValue)
 {
 	const FVector2D Value = InputActionValue.Get<FVector2D>();
 	const FRotator Rotation = GetControlRotation();
@@ -103,20 +112,19 @@ void AAuraPlayerController::ClickToMove(const FGameplayTag& InputTag, const bool
 	// On Input Pressed / Held.
 	if (bInputPressed)
 	{
-		if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_RMB))
+		if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().Input_Ability_RMB))
 		{
 			if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
 			return;
 		}
 
-		if (bTargeting)
+		if (bTargeting || bShiftKeyDown)
 		{
 			if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
 		}
 		else
 		{
 			FollowTime += GetWorld()->GetDeltaSeconds();
-
 			if (CursorHit.bBlockingHit) CachedDestination = CursorHit.ImpactPoint;
 
 			if (APawn* ControlledPawn = GetPawn())
@@ -129,17 +137,15 @@ void AAuraPlayerController::ClickToMove(const FGameplayTag& InputTag, const bool
 	// On Input Released
 	else
 	{
-		if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_RMB))
+		if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().Input_Ability_RMB))
 		{
 			if (GetASC()) GetASC()->AbilityInputTagReleased(InputTag);
 			return;
 		}
 
-		if (bTargeting)
-		{
-			if (GetASC()) GetASC()->AbilityInputTagReleased(InputTag);
-		}
-		else
+		if (GetASC()) GetASC()->AbilityInputTagReleased(InputTag);
+		
+		if (!bTargeting && !bShiftKeyDown)
 		{
 			const APawn* ControlledPawn = GetPawn();
 			if (FollowTime <= ShortPressThreshold && ControlledPawn)

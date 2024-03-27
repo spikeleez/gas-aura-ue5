@@ -51,12 +51,14 @@ struct FAuraGameplayTags
  inline CREATE_NATIVE_TAG(Attributes_Vital_Mana, "Amount of Mana.");
 
  /* Input Tags */
- inline CREATE_NATIVE_TAG(InputTag_LMB, "Input Tag for Left Mouse Button");
- inline CREATE_NATIVE_TAG(InputTag_RMB, "Input Tag for Right Mouse Button");
- inline CREATE_NATIVE_TAG(InputTag_1, "Input Tag for 1 Key");
- inline CREATE_NATIVE_TAG(InputTag_2, "Input Tag for 2 Key");
- inline CREATE_NATIVE_TAG(InputTag_3, "Input Tag for 3 Key");
- inline CREATE_NATIVE_TAG(InputTag_4, "Input Tag for 4 Key");
+ inline CREATE_NATIVE_TAG(Input_Native_Move, "Native Input Tag for Move Action");
+ inline CREATE_NATIVE_TAG(Input_Native_Shift, "Native Input Tag for Shift Key");
+ inline CREATE_NATIVE_TAG(Input_Ability_LMB, "Ability Input Tag for Left Mouse Button");
+ inline CREATE_NATIVE_TAG(Input_Ability_RMB, "Ability Input Tag for Right Mouse Button");
+ inline CREATE_NATIVE_TAG(Input_Ability_1, "Ability Input Tag for 1 Key");
+ inline CREATE_NATIVE_TAG(Input_Ability_2, "Ablity Input Tag for 2 Key");
+ inline CREATE_NATIVE_TAG(Input_Ability_3, "Ability Input Tag for 3 Key");
+ inline CREATE_NATIVE_TAG(Input_Ability_4, "Ability Input Tag for 4 Key");
 
 private:
  static FAuraGameplayTags GameplayTags;

@@ -25,6 +25,9 @@ public:
 
 	virtual void PlayerTick(float DeltaTime) override;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Input")
+	bool bShiftKeyDown = false;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
@@ -35,30 +38,28 @@ private:
 	void AbilityInputTagReleased(FGameplayTag InputTag);
 	void AbilityInputTagHeld(FGameplayTag InputTag);
 	
-	void Move(const FInputActionValue& InputActionValue);
+	void Input_Move(const FInputActionValue& InputActionValue);
+	void Input_ShiftPressed() { bShiftKeyDown = true; }
+	void Input_ShiftReleased() { bShiftKeyDown = false; }
 	
 	void ClickToMove(const FGameplayTag& InputTag, const bool bInputPressed);
 	void AutoRun();
 
 	void CursorTrace();
-	UAuraAbilitySystemComponent* GetASC();
+	IEnemyInterface* LastActor = nullptr;
+	IEnemyInterface* ThisActor = nullptr;
+	FHitResult CursorHit;
 
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputMappingContext> AuraContext;
+	
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UAuraInputData> InputData;
 
 	UPROPERTY()
 	TObjectPtr<UAuraAbilitySystemComponent> AuraAbilitySystemComponent;
+	UAuraAbilitySystemComponent* GetASC();
 	
-	UPROPERTY(EditAnywhere, Category="Input")
-	TObjectPtr<UInputMappingContext> AuraContext;
-
-	UPROPERTY(EditAnywhere, Category="Input")
-	TObjectPtr<UInputAction> MoveAction;
-	
-	IEnemyInterface* LastActor = nullptr;
-	IEnemyInterface* ThisActor = nullptr;
-	FHitResult CursorHit;
-
 	/* Click to Move */
 	FVector CachedDestination = FVector::ZeroVector;
 	float FollowTime = 0.f;
