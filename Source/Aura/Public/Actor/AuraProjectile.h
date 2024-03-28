@@ -6,9 +6,11 @@
 #include "GameFramework/Actor.h"
 #include "AuraProjectile.generated.h"
 
+class UNiagaraSystem;
+class UNiagaraComponent;
+class UAuraProjectileData;
 class USphereComponent;
 class UProjectileMovementComponent;
-class UNiagaraSystem;
 
 UCLASS()
 class AURA_API AAuraProjectile : public AActor
@@ -17,36 +19,41 @@ class AURA_API AAuraProjectile : public AActor
 	
 public:	
 	AAuraProjectile();
-
+	
 	UPROPERTY(VisibleAnywhere, Category="Projectile")
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovement;
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void Destroyed() override;
-
+	
 	UFUNCTION()
-	void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="*Projectile Setup")
+	float ProjectileLifeSpan = 15.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="*Projectile Setup|Systems")
+	TObjectPtr<UNiagaraSystem> ProjectileImpactSystem = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="*Projectile Setup|Systems")
+	TObjectPtr<UNiagaraSystem> ProjectileDestroySystem = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="*Projectile Setup|Sounds")
+	TObjectPtr<USoundBase> ProjectileSound = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="*Projectile Setup|Sounds")
+	TObjectPtr<USoundBase> ProjectileImpactSound = nullptr;
 	
 private:
 	bool bHit = false;
-
-	UPROPERTY(EditDefaultsOnly)
-	float LifeSpan = 15.f;
 	
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USphereComponent> Sphere;
+	TObjectPtr<USphereComponent> ProjectileRadius;
 
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<UNiagaraSystem> ImpactEffect;
-
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<USoundBase> ImpactSound;
-
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<USoundBase> LoopingSound;
-
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UNiagaraComponent> ProjectileNiagara;
+	
 	UPROPERTY()
-	TObjectPtr<UAudioComponent> LoopingSoundComponent;
+	TObjectPtr<UAudioComponent> ProjectileAudioComponent;
 };
