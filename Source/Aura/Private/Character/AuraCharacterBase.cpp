@@ -6,15 +6,19 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
+#include "AbilitySystem/AuraAttributeSet.h"
 #include "Aura/Aura.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/WidgetComponent.h"
 #include "Data/AuraCharacterData.h"
+#include "UI/Widget/AuraUserWidget.h"
 
 AAuraCharacterBase::AAuraCharacterBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	GetCapsuleComponent()->SetGenerateOverlapEvents(false);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Projectile, ECR_Overlap);
 	GetMesh()->SetGenerateOverlapEvents(true);
@@ -22,6 +26,11 @@ AAuraCharacterBase::AAuraCharacterBase()
 	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>("Weapon");
 	Weapon->SetupAttachment(GetMesh(), FName("WeaponHandSocket"));
 	Weapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	HealthBar = CreateDefaultSubobject<UWidgetComponent>("HealthBar");
+	HealthBar->SetupAttachment(GetRootComponent());
+	HealthBar->SetWidgetSpace(EWidgetSpace::Screen);
+	HealthBar->SetDrawAtDesiredSize(true);
 }
 
 void AAuraCharacterBase::OnConstruction(const FTransform& Transform)
@@ -30,6 +39,14 @@ void AAuraCharacterBase::OnConstruction(const FTransform& Transform)
 
 	SetupCharacter(CharacterData);
 	SetupWeapon(CharacterData);
+}
+
+void AAuraCharacterBase::BeginPlay()
+{
+	Super::BeginPlay();
+
+	// Bind Callback Health Delegates (Progress Bar).
+	BindCallbackHealthBarDelegates();
 }
 
 void AAuraCharacterBase::InitAbilityActorInfo()
@@ -53,23 +70,38 @@ void AAuraCharacterBase::InitAbilityActorInfo()
 	InitializeDefaultAttributes();
 }
 
+void AAuraCharacterBase::BindCallbackHealthBarDelegates()
+{
+	if (UAuraUserWidget* Widget = Cast<UAuraUserWidget>(HealthBar->GetUserWidgetObject()))
+	{
+		Widget->SetWidgetController(this);
+	}
+	
+	if (const UAuraAttributeSet* AuraAS = Cast<UAuraAttributeSet>(AttributeSet))
+	{
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAS->GetHealthAttribute()).AddLambda(
+			[this](const FOnAttributeChangeData& Data)
+		{
+			OnHealthChanged.Broadcast(Data.NewValue);
+		});
+
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAS->GetMaxHealthAttribute()).AddLambda(
+			[this](const FOnAttributeChangeData& Data)
+		{
+			OnMaxHealthChanged.Broadcast(Data.NewValue);
+		});
+
+		// Broadcast the initial values of Health.
+		OnHealthChanged.Broadcast(AuraAS->GetHealth());
+		OnMaxHealthChanged.Broadcast(AuraAS->GetMaxHealth());
+	}
+}
+
 FVector AAuraCharacterBase::GetCombatSocketLocation()
 {
 	check(Weapon);
 	check(CharacterData);
 	return Weapon->GetSocketLocation(CharacterData->GetCharacterWeaponInfos().WeaponSocket);
-}
-
-void AAuraCharacterBase::InitializeDefaultAttributes() const
-{
-	if (!HasAuthority()) return;
-	UAuraAbilitySystemLibrary::GiveGrantedAttributes(this, CharacterData, AbilitySystemComponent);
-}
-
-void AAuraCharacterBase::InitializeDefaultAbilities() const
-{
-	if (!HasAuthority()) return;
-	UAuraAbilitySystemLibrary::GiveGrantedAbilities(this, CharacterData, AbilitySystemComponent);
 }
 
 void AAuraCharacterBase::SetupCharacter(UAuraCharacterData* Data) const
@@ -89,7 +121,14 @@ void AAuraCharacterBase::SetupWeapon(UAuraCharacterData* Data) const
 	}
 }
 
-void AAuraCharacterBase::BeginPlay()
+void AAuraCharacterBase::InitializeDefaultAttributes() const
 {
-	Super::BeginPlay();
+	if (!HasAuthority()) return;
+	UAuraAbilitySystemLibrary::GiveGrantedAttributes(this, CharacterData, AbilitySystemComponent);
+}
+
+void AAuraCharacterBase::InitializeDefaultAbilities() const
+{
+	if (!HasAuthority()) return;
+	UAuraAbilitySystemLibrary::GiveGrantedAbilities(this, CharacterData, AbilitySystemComponent);
 }

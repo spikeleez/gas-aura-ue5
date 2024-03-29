@@ -6,8 +6,10 @@
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
 #include "Interaction/CombatInterface.h"
+#include "UI/WidgetController/OverlayWidgetController.h"
 #include "AuraCharacterBase.generated.h"
 
+class UWidgetComponent;
 class UAuraCharacterData;
 class UAbilitySystemComponent;
 class UAttributeSet;
@@ -19,7 +21,6 @@ class AURA_API AAuraCharacterBase : public ACharacter, public IAbilitySystemInte
 
 public:
 	AAuraCharacterBase();
-	virtual void OnConstruction(const FTransform& Transform) override;
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return AbilitySystemComponent; };
 	virtual UAttributeSet* GetAttributeSet() const { return AttributeSet; }
@@ -35,9 +36,18 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="Character Data|Weapon")
 	void SetupWeapon(UAuraCharacterData* Data) const;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeChangedSignature OnHealthChanged;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeChangedSignature OnMaxHealthChanged;
+	
 protected:
+	virtual void OnConstruction(const FTransform& Transform) override;
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo();
+	virtual void BindCallbackHealthBarDelegates();
 	virtual FVector GetCombatSocketLocation() override;
 
 	UPROPERTY(EditAnywhere, Category="Combat")
@@ -51,4 +61,8 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<UWidgetComponent> HealthBar;
+	
 };

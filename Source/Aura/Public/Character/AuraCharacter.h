@@ -34,6 +34,7 @@ public:
 
 protected:
 	virtual void InitAbilityActorInfo() override;
+	virtual void BindCallbackHealthBarDelegates() override;
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category="Movement")

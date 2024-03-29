@@ -5,6 +5,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "AbilitySystem/AuraAttributeSet.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -56,9 +57,12 @@ void AAuraCharacter::PossessedBy(AController* NewController)
 	// Init Ability Actor Info for the Server.
 	InitAbilityActorInfo();
 
-	// Initialize Default Attributes and Abilities
+	// Initialize Default Attributes and Abilities.
 	InitializeDefaultAttributes();
 	InitializeDefaultAbilities();
+
+	// Bind Callback Health Delegates (Progress Bar).
+	BindCallbackHealthBarDelegates();
 }
 
 void AAuraCharacter::OnRep_PlayerState()
@@ -95,5 +99,28 @@ void AAuraCharacter::InitAbilityActorInfo()
 		{
 			AuraHUD->InitOverlay(AuraPlayerController, AuraPlayerState, AbilitySystemComponent, AttributeSet);
 		}
+	}
+}
+
+void AAuraCharacter::BindCallbackHealthBarDelegates()
+{
+	const AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
+	check(AuraPlayerState);
+
+	AttributeSet = AuraPlayerState->GetAttributeSet();
+	AbilitySystemComponent = AuraPlayerState->GetAbilitySystemComponent();
+	if (const UAuraAttributeSet* AuraAS = Cast<UAuraAttributeSet>(AttributeSet))
+	{
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAS->GetHealthAttribute()).AddLambda(
+			[this](const FOnAttributeChangeData& Data)
+		{
+			OnHealthChanged.Broadcast(Data.NewValue);
+		});
+
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAS->GetMaxHealthAttribute()).AddLambda(
+			[this](const FOnAttributeChangeData& Data)
+		{
+			OnMaxHealthChanged.Broadcast(Data.NewValue);
+		});
 	}
 }

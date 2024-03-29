@@ -3,9 +3,9 @@
 
 #include "Character/AuraEnemy.h"
 
+#include "Aura/Aura.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAttributeSet.h"
-#include "Aura/Aura.h"
 
 
 AAuraEnemy::AAuraEnemy()
