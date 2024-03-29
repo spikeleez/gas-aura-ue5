@@ -1,0 +1,11 @@
+Key,SourceString
+Attributes_Secondary_Armor,"Reduces Damage Taken, improves Block Chance."
+Attributes_Secondary_ArmorPenetration,"Ignored Percentage of Enemy Armor, Increases Critical Hit Chance."
+Attributes_Secondary_BlockChance,Chance to cut incoming damage in half.
+Attributes_Secondary_CriticalHitChance,Chance to Double Damage Plus Critical Hit Bonus
+Attributes_Secondary_CriticalHitDamage,Bonus Damage added when a Critical Hit is Scored.
+Attributes_Secondary_CriticalHitResistance,Reduces Critical Hit Chance of Attacking Enemies.
+Attributes_Secondary_HealthRegeneration,Amount of Health Regenerated every time.
+Attributes_Secondary_ManaRegeneration,Amount of Mana Regenerated every time.
+Attributes_Secondary_MaxHealth,Maximum amount of Health Obtainable.
+Attributes_Secondary_MaxMana,Maximum amount of Mana Obtainable.
