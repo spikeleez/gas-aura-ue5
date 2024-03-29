@@ -190,7 +190,7 @@ void AAuraPlayerController::AutoRun()
 
 void AAuraPlayerController::CursorTrace()
 {
-	GetHitResultUnderCursor(CURSOR_TRACE, false, CursorHit);
+	GetHitResultUnderCursor(ECC_Cursor, false, CursorHit);
 	if (!CursorHit.bBlockingHit) return;
 
 	LastActor = ThisActor;

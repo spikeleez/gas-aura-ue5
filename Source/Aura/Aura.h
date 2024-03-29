@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 
-#define CURSOR_TRACE ECC_GameTraceChannel1
+#define ECC_Cursor ECollisionChannel::ECC_GameTraceChannel1
+#define ECC_Projectile ECollisionChannel::ECC_GameTraceChannel2
+
 #define CUSTOM_DEPTH_RED 250
 

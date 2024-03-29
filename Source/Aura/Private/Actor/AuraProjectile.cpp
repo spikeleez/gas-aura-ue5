@@ -5,6 +5,7 @@
 
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
+#include "Aura/Aura.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -15,6 +16,7 @@ AAuraProjectile::AAuraProjectile()
 
 	ProjectileRadius = CreateDefaultSubobject<USphereComponent>("Sphere");
 	SetRootComponent(ProjectileRadius);
+	ProjectileRadius->SetCollisionObjectType(ECC_Projectile);
 	ProjectileRadius->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	ProjectileRadius->SetCollisionResponseToAllChannels(ECR_Ignore);
 	ProjectileRadius->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
