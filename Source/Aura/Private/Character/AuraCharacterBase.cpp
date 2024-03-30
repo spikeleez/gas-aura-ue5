@@ -31,6 +31,9 @@ AAuraCharacterBase::AAuraCharacterBase()
 	HealthBar->SetupAttachment(GetRootComponent());
 	HealthBar->SetWidgetSpace(EWidgetSpace::Screen);
 	HealthBar->SetDrawAtDesiredSize(true);
+	HealthBar->SetGenerateOverlapEvents(false);
+	HealthBar->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	HealthBar->SetCollisionResponseToAllChannels(ECR_Ignore);
 }
 
 void AAuraCharacterBase::OnConstruction(const FTransform& Transform)
