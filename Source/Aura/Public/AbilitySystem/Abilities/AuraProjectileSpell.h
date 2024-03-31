@@ -26,6 +26,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Projectile")
 	TSubclassOf<AAuraProjectile> ProjectileClass;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Projectile|Gameplay Effects")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Projectile|Damage")
 	TSubclassOf<UGameplayEffect> DamageEffectClass;
 };

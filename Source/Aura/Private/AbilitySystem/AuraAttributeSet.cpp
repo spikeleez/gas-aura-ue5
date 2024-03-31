@@ -202,8 +202,12 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			if (const bool bFatal = NewHealth <= 0.f)
 			{
 				// TODO: Die.
-				const FString Msg = FString::Printf(TEXT("The target: %s, is Die"), *Props.TargetAvatarActor->GetName());
-				GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, Msg);
+			}
+			else
+			{
+				FGameplayTagContainer TagContainer;
+				TagContainer.AddTag(FAuraGameplayTags::Get().Effects_HitReact);
+				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
 			}
 		}
 	}

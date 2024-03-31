@@ -123,6 +123,12 @@ void AAuraCharacterBase::SetupWeapon(UAuraCharacterData* Data) const
 	}
 }
 
+UAuraCharacterData* AAuraCharacterBase::GetCharacterData()
+{
+	if (CharacterData) return CharacterData;
+	return nullptr;
+}
+
 void AAuraCharacterBase::InitializeDefaultAttributes() const
 {
 	if (!HasAuthority()) return;

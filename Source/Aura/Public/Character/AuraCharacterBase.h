@@ -37,6 +37,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Character Data|Weapon")
 	void SetupWeapon(UAuraCharacterData* Data) const;
 
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Character Data")
+	UAuraCharacterData* GetCharacterData();
+
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeChangedSignature OnHealthChanged;
 
@@ -64,5 +67,4 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UWidgetComponent> HealthBar;
-	
 };

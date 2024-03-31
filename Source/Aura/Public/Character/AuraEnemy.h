@@ -28,9 +28,17 @@ public:
 	virtual int32 GetCharacterLevel() override;
 	/* End Combat Interface */
 
+	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
+
 	UPROPERTY(BlueprintReadOnly)
 	bool bHighlighted = false;
 
+	UPROPERTY(BlueprintReadOnly, Category="Combat")
+	bool bHitReacting = false;
+
+	UPROPERTY(BlueprintReadOnly, Category="Character Class Defaults")
+	float BaseWalkSpeed = 250.f;
+	
 protected:
 	virtual void BeginPlay() override;
 

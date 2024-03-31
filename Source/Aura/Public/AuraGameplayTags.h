@@ -63,6 +63,9 @@ struct FAuraGameplayTags
  /* Damage Tags */
  inline CREATE_NATIVE_TAG(Damage, "A Damage Tag");
 
+ /* Effect Tags */
+ inline CREATE_NATIVE_TAG(Effects_HitReact, "A Hit React Tag.");
+
 private:
  static FAuraGameplayTags GameplayTags;
 };

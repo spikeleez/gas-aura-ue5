@@ -23,10 +23,19 @@ struct FAuraCharacterData_WeaponInfos
 	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	USkeletalMesh* WeaponMesh = nullptr;
+	TObjectPtr<USkeletalMesh> WeaponMesh = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FName WeaponSocket = "TipSocket";
+};
+
+USTRUCT(BlueprintType)
+struct FAuraCharacterData_CharacterAnimMontages
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TObjectPtr<UAnimMontage> HitReactMontage = nullptr;
 };
 
 USTRUCT(BlueprintType)
@@ -44,13 +53,16 @@ struct FAuraCharacterData_CharacterInfos
 	TSubclassOf<UAnimInstance> CharacterAnimClass = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	USkeletalMesh* CharacterMesh = nullptr;
+	TObjectPtr<USkeletalMesh> CharacterMesh = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	UTexture2D* CharacterIcon = nullptr;
+	TObjectPtr<UTexture2D> CharacterIcon = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FAuraCharacterData_WeaponInfos WeaponInfos;
+	FAuraCharacterData_WeaponInfos CharacterWeapon;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FAuraCharacterData_CharacterAnimMontages CharacterAnimMontage;
 };
 
 /**
@@ -74,5 +86,7 @@ public:
 	USkeletalMesh* GetWeaponMeshData() const;
 	UTexture2D* GetCharacterIconData() const;
 	FName GetCharacterNameData() const;
+	FAuraCharacterData_CharacterInfos GetCharacterInfosData() const;
 	FAuraCharacterData_WeaponInfos GetCharacterWeaponInfos() const;
+	FAuraCharacterData_CharacterAnimMontages GetCharacterAnimMontageData() const;
 };

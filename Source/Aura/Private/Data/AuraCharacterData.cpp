@@ -29,9 +29,9 @@ TSubclassOf<UAnimInstance> UAuraCharacterData::GetCharacterAnimClassData() const
 
 USkeletalMesh* UAuraCharacterData::GetWeaponMeshData() const
 {
-	if (CharacterInfos.WeaponInfos.WeaponMesh)
+	if (CharacterInfos.CharacterWeapon.WeaponMesh)
 	{
-		return CharacterInfos.WeaponInfos.WeaponMesh;
+		return CharacterInfos.CharacterWeapon.WeaponMesh;
 	}
 	return nullptr;
 }
@@ -54,8 +54,18 @@ FName UAuraCharacterData::GetCharacterNameData() const
 	return "";
 }
 
+FAuraCharacterData_CharacterInfos UAuraCharacterData::GetCharacterInfosData() const
+{
+	return CharacterInfos;
+}
+
 FAuraCharacterData_WeaponInfos UAuraCharacterData::GetCharacterWeaponInfos() const
 {
-	if (CharacterInfos.WeaponInfos.WeaponMesh == nullptr) return FAuraCharacterData_WeaponInfos();
-	return CharacterInfos.WeaponInfos;
+	if (CharacterInfos.CharacterWeapon.WeaponMesh == nullptr) return FAuraCharacterData_WeaponInfos();
+	return CharacterInfos.CharacterWeapon;
+}
+
+FAuraCharacterData_CharacterAnimMontages UAuraCharacterData::GetCharacterAnimMontageData() const
+{
+	return CharacterInfos.CharacterAnimMontage;
 }
