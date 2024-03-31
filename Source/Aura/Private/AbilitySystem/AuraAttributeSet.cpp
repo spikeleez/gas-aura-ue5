@@ -188,6 +188,25 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	{
 		SetMana(FMath::Clamp(GetMana(), 0.f, GetMaxMana()));
 	}
+
+	if (Data.EvaluatedData.Attribute == GetIncomingDamageAttribute())
+	{
+		const float LocalIncomingDamage = GetIncomingDamage();
+		SetIncomingDamage(0.f);
+		
+		if (LocalIncomingDamage > 0.f)
+		{
+			const float NewHealth = GetHealth() - LocalIncomingDamage;
+			SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
+
+			if (const bool bFatal = NewHealth <= 0.f)
+			{
+				// TODO: Die.
+				const FString Msg = FString::Printf(TEXT("The target: %s, is Die"), *Props.TargetAvatarActor->GetName());
+				GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, Msg);
+			}
+		}
+	}
 }
 
 void UAuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data, FAuraEffectProperties& Props) const
