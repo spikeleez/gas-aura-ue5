@@ -27,4 +27,6 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category="Combat")
 	void UpdateFacingTargetLocation(const FVector& Location);
+
+	virtual void Die() = 0;
 };

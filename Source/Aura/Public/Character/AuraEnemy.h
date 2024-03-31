@@ -26,6 +26,7 @@ public:
 
 	/* Combat Interface */
 	virtual int32 GetCharacterLevel() override;
+	virtual void Die() override;
 	/* End Combat Interface */
 
 	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);

@@ -11,6 +11,7 @@
 #include "Data/AuraAbilitySetData.h"
 #include "Net/UnrealNetwork.h"
 #include "Data/AuraCharacterData.h"
+#include "Interaction/CombatInterface.h"
 
 
 UAuraAttributeSet::UAuraAttributeSet()
@@ -204,7 +205,10 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 
 			if (const bool bFatal = NewHealth <= 0.f)
 			{
-				// TODO: Die.
+				if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor))
+				{
+					CombatInterface->Die();
+				}
 			}
 			else
 			{

@@ -40,6 +40,11 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Character Data")
 	UAuraCharacterData* GetCharacterData();
 
+	virtual void Die() override;
+
+	UFUNCTION(NetMulticast, Reliable)
+	virtual void MulticastHandleDeath();
+
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeChangedSignature OnHealthChanged;
 

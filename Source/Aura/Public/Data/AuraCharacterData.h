@@ -23,7 +23,7 @@ struct FAuraCharacterData_WeaponInfos
 	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TObjectPtr<USkeletalMesh> WeaponMesh = nullptr;
+	USkeletalMesh* WeaponMesh = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FName WeaponSocket = "TipSocket";
@@ -35,7 +35,7 @@ struct FAuraCharacterData_CharacterAnimMontages
 	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TObjectPtr<UAnimMontage> HitReactMontage = nullptr;
+	UAnimMontage* HitReactMontage = nullptr;
 };
 
 USTRUCT(BlueprintType)
@@ -53,16 +53,19 @@ struct FAuraCharacterData_CharacterInfos
 	TSubclassOf<UAnimInstance> CharacterAnimClass = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TObjectPtr<USkeletalMesh> CharacterMesh = nullptr;
+	USkeletalMesh* CharacterMesh = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TObjectPtr<UTexture2D> CharacterIcon = nullptr;
+	UTexture2D* CharacterIcon = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FAuraCharacterData_WeaponInfos CharacterWeapon;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FAuraCharacterData_CharacterAnimMontages CharacterAnimMontage;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	float BodyLifeSpan = 5.f;
 };
 
 /**
@@ -76,7 +79,7 @@ class AURA_API UAuraCharacterData : public UPrimaryDataAsset
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Character Default Infos")
 	FAuraCharacterData_CharacterInfos CharacterInfos;
-	
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Character Ability Infos")
 	UAuraAbilitySetData* CharacterAbilitySet;
 

@@ -7,6 +7,7 @@
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AuraGameplayTags.h"
+#include "Data/AuraCharacterData.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 
@@ -39,6 +40,12 @@ void AAuraEnemy::UnHighlightActor()
 int32 AAuraEnemy::GetCharacterLevel()
 {
 	return Level;
+}
+
+void AAuraEnemy::Die()
+{
+	SetLifeSpan(GetCharacterData()->CharacterInfos.BodyLifeSpan);
+	Super::Die();
 }
 
 void AAuraEnemy::BeginPlay()
