@@ -50,7 +50,7 @@ void AAuraEnemy::BeginPlay()
 	// Initialize Ability Actor Info - Full Function for the Enemies.
 	InitAbilityActorInfo();
 
-	AbilitySystemComponent->RegisterGameplayTagEvent(FAuraGameplayTags::Get().Effects_HitReact,
+	AbilitySystemComponent->RegisterGameplayTagEvent(FAuraGameplayTags::Get().Abilities_Effects_HitReact,
 		EGameplayTagEventType::NewOrRemoved).AddUObject(this, &AAuraEnemy::HitReactTagChanged);
 }
 

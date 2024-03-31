@@ -7,7 +7,10 @@
 #include "GameFramework/Character.h"
 #include "GameplayEffectExtension.h"
 #include "AuraGameplayTags.h"
+#include "AbilitySystem/AuraAbilitySystemLibrary.h"
+#include "Data/AuraAbilitySetData.h"
 #include "Net/UnrealNetwork.h"
+#include "Data/AuraCharacterData.h"
 
 
 UAuraAttributeSet::UAuraAttributeSet()
@@ -205,9 +208,7 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			}
 			else
 			{
-				FGameplayTagContainer TagContainer;
-				TagContainer.AddTag(FAuraGameplayTags::Get().Effects_HitReact);
-				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+				ApplyHitReactTagToTarget(FAuraGameplayTags::Get().Abilities_Effects_HitReact, Props.TargetAvatarActor, Props.TargetASC);
 			}
 		}
 	}
@@ -243,6 +244,24 @@ void UAuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData
 		Props.TargetController = Data.Target.AbilityActorInfo->PlayerController.Get();
 		Props.TargetCharacter = Cast<ACharacter>(Props.TargetAvatarActor);
 		Props.TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(Props.TargetAvatarActor);
+	}
+}
+
+void UAuraAttributeSet::ApplyHitReactTagToTarget(FGameplayTag HitReactTag, AActor* TargetAvatarActor, UAbilitySystemComponent* ASC)
+{
+	check(ASC);
+
+	if (const UAuraCharacterData* Data = Cast<UAuraCharacterData>(UAuraAbilitySystemLibrary::GetCharacterData(this, TargetAvatarActor)))
+	{
+		for (const FAuraCommonAbilitiesInfo& AbilityInfo : Data->CharacterAbilitySet->GrantedCommonAbilitiesData->CommonAbilitiesInfos)
+		{
+			if (AbilityInfo.AbilityTag.MatchesTagExact(HitReactTag))
+			{
+				FGameplayTagContainer TagContainer;
+				TagContainer.AddTag(HitReactTag);
+				ASC->TryActivateAbilitiesByTag(TagContainer);
+			}
+		}
 	}
 }
 

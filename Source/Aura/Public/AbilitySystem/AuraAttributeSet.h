@@ -200,4 +200,5 @@ protected:
 
 private:
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FAuraEffectProperties& Props) const;
+	void ApplyHitReactTagToTarget(FGameplayTag HitReactTag, AActor* TargetAvatarActor, UAbilitySystemComponent* ASC);
 };

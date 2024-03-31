@@ -4,6 +4,7 @@
 
 #include "Engine/DataAsset.h"
 #include "GameplayTags.h"
+#include "AuraCommonAbilitiesData.h"
 #include "AuraAbilitySetData.generated.h"
 
 class UAttributeSet;
@@ -50,4 +51,7 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly, Category="Gameplay Abilities", meta=(TitleProperty=GameplayAbility))
 	TArray<FAuraAbilitySetData_GameplayAbility> GrantedGameplayAbilities;
+
+	UPROPERTY(EditDefaultsOnly, Category="Common Abilities", meta=(TitleProperty=GameplayAbility))
+	TObjectPtr<UAuraCommonAbilitiesData> GrantedCommonAbilitiesData;
 };

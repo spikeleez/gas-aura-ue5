@@ -63,8 +63,11 @@ struct FAuraGameplayTags
  /* Damage Tags */
  inline CREATE_NATIVE_TAG(Damage, "A Damage Tag");
 
- /* Effect Tags */
- inline CREATE_NATIVE_TAG(Effects_HitReact, "A Hit React Tag.");
+ /* Abilities Tag */
+ 
+ 
+ /* Abilities Effect Tags */
+ inline CREATE_NATIVE_TAG(Abilities_Effects_HitReact, "A Ability Hit React Tag.");
 
 private:
  static FAuraGameplayTags GameplayTags;

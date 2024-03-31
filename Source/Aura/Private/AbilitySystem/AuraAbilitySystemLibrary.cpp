@@ -4,6 +4,7 @@
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 
 #include "AbilitySystem/AuraAttributeSet.h"
+#include "Character/AuraCharacterBase.h"
 #include "Data/AuraAbilitySetData.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/AuraPlayerState.h"
@@ -50,6 +51,23 @@ void UAuraAbilitySystemLibrary::GiveGrantedAbilities(const UObject* WorldContext
 	}
 }
 
+void UAuraAbilitySystemLibrary::GiveGrantedCommonAbilities(const UObject* WorldContext,
+	const UAuraCharacterData* CharacterData, UAbilitySystemComponent* ASC)
+{
+	check(ASC);
+	check(CharacterData);
+
+	if (const UAuraAbilitySetData* AbilitySet = Cast<UAuraAbilitySetData>(CharacterData->CharacterAbilitySet))
+	{
+		for (const FAuraCommonAbilitiesInfo AbilitiesInfo : AbilitySet->GrantedCommonAbilitiesData->CommonAbilitiesInfos)
+		{
+			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilitiesInfo.Ability, AbilitiesInfo.AbilityLevel);
+			AbilitySpec.DynamicAbilityTags.AddTag(AbilitiesInfo.AbilityTag);
+			ASC->GiveAbility(AbilitySpec);
+		}
+	}
+}
+
 UOverlayWidgetController* UAuraAbilitySystemLibrary::GetOverlayWidgetController(const UObject* WorldContext)
 {
 	if (APlayerController* PC = UGameplayStatics::GetPlayerController(WorldContext, 0))
@@ -77,6 +95,20 @@ UAttributeMenuWidgetController* UAuraAbilitySystemLibrary::GetAttributeMenuWidge
 			UAttributeSet* AS = PS->GetAttributeSet();
 			const FWidgetControllerParams WidgetControllerParams(PC, PS, ASC, AS);
 			return AuraHUD->GetAttributeMenuWidgetController(WidgetControllerParams);
+		}
+	}
+	return nullptr;
+}
+
+UAuraCharacterData* UAuraAbilitySystemLibrary::GetCharacterData(const UObject* WorldContext, AActor* Actor)
+{
+	check(Actor);
+
+	if (AAuraCharacterBase* CharacterBase = Cast<AAuraCharacterBase>(Actor))
+	{
+		if (UAuraCharacterData* CharacterData = Cast<UAuraCharacterData>(CharacterBase->GetCharacterData()))
+		{
+			return CharacterData;
 		}
 	}
 	return nullptr;

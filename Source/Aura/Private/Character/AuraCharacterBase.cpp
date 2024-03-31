@@ -139,4 +139,5 @@ void AAuraCharacterBase::InitializeDefaultAbilities() const
 {
 	if (!HasAuthority()) return;
 	UAuraAbilitySystemLibrary::GiveGrantedAbilities(this, CharacterData, AbilitySystemComponent);
+	UAuraAbilitySystemLibrary::GiveGrantedCommonAbilities(this, CharacterData, AbilitySystemComponent);
 }

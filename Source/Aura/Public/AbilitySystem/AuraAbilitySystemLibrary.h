@@ -26,9 +26,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Aura Ability System Library|Gameplay Abilities")
 	static void GiveGrantedAbilities(const UObject* WorldContext, UAuraCharacterData* CharacterData, UAbilitySystemComponent* ASC);
 
+	UFUNCTION(BlueprintCallable, Category="Aura Ability System Library|Gameplay Abilities")
+	static void GiveGrantedCommonAbilities(const UObject* WorldContext, const UAuraCharacterData* CharacterData, UAbilitySystemComponent* ASC);
+
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Aura Ability System Library|Widget Controller")
 	static UOverlayWidgetController* GetOverlayWidgetController(const UObject* WorldContext = nullptr);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Aura Ability System Library|Widget Controller")
 	static UAttributeMenuWidgetController* GetAttributeMenuWidgetController(const UObject* WorldContext = nullptr);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Aura Ability System Library|Character Data")
+	static UAuraCharacterData* GetCharacterData(const UObject* WorldContext, AActor* Actor);
 };
