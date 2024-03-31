@@ -56,7 +56,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character Data")
 	TObjectPtr<UAuraCharacterData> CharacterData;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 
 	UPROPERTY()
