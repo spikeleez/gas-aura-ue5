@@ -56,7 +56,16 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo();
 	virtual void BindCallbackHealthBarDelegates();
+	
 	virtual FVector GetCombatSocketLocation() override;
+
+	void Dissolve();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void StartDissolveTimeline(UMaterialInstanceDynamic* DynamicMaterialInstance);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void StartWeaponDissolveTimeline(UMaterialInstanceDynamic* DynamicMaterialInstance);
 
 	UPROPERTY(EditAnywhere, Category="Combat")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
@@ -72,4 +81,11 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UWidgetComponent> HealthBar;
+
+	/* Dissolve Effects */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TObjectPtr<UMaterialInstance> DissolveMaterialInstance;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TObjectPtr<UMaterialInstance> WeaponDissolveMaterialInstance;
 };
