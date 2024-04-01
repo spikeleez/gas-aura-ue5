@@ -27,6 +27,9 @@ struct FAuraCharacterData_WeaponInfos
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FName WeaponSocket = "TipSocket";
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UMaterialInstance* WeaponDissolveMaterialInstance = nullptr;
 };
 
 USTRUCT(BlueprintType)
@@ -57,15 +60,18 @@ struct FAuraCharacterData_CharacterInfos
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UTexture2D* CharacterIcon = nullptr;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	float BodyLifeSpan = 5.f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FAuraCharacterData_WeaponInfos CharacterWeapon;
+	UMaterialInstance* BodyDissolveMaterialInstance = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FAuraCharacterData_WeaponInfos CharacterWeaponInfos;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FAuraCharacterData_CharacterAnimMontages CharacterAnimMontage;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	float BodyLifeSpan = 5.f;
 };
 
 /**
@@ -84,12 +90,7 @@ public:
 	UAuraAbilitySetData* CharacterAbilitySet;
 
 	USkeletalMesh* GetCharacterMeshData() const;
-	EAuraCharacterClass GetCharacterClassData() const;
 	TSubclassOf<UAnimInstance> GetCharacterAnimClassData() const;
-	USkeletalMesh* GetWeaponMeshData() const;
-	UTexture2D* GetCharacterIconData() const;
-	FName GetCharacterNameData() const;
 	FAuraCharacterData_CharacterInfos GetCharacterInfosData() const;
-	FAuraCharacterData_WeaponInfos GetCharacterWeaponInfos() const;
 	FAuraCharacterData_CharacterAnimMontages GetCharacterAnimMontageData() const;
 };

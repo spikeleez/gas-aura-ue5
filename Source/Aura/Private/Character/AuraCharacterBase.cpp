@@ -103,22 +103,28 @@ FVector AAuraCharacterBase::GetCombatSocketLocation()
 {
 	check(Weapon);
 	check(CharacterData);
-	return Weapon->GetSocketLocation(CharacterData->GetCharacterWeaponInfos().WeaponSocket);
+	return Weapon->GetSocketLocation(CharacterData->CharacterInfos.CharacterWeaponInfos.WeaponSocket);
 }
 
 void AAuraCharacterBase::Dissolve()
 {
-	if (IsValid(DissolveMaterialInstance))
+	if (CharacterData)
 	{
-		UMaterialInstanceDynamic* DynamicMatInst = UMaterialInstanceDynamic::Create(DissolveMaterialInstance, this);
-		GetMesh()->SetMaterial(0, DynamicMatInst);
-		StartDissolveTimeline(DynamicMatInst);
-	}
-	if (IsValid(WeaponDissolveMaterialInstance))
-	{
-		UMaterialInstanceDynamic* DynamicMatInst = UMaterialInstanceDynamic::Create(WeaponDissolveMaterialInstance, this);
-		Weapon->SetMaterial(0, DynamicMatInst);
-		StartWeaponDissolveTimeline(DynamicMatInst);
+		UMaterialInstance* BodyDissolveMat = CharacterData->CharacterInfos.BodyDissolveMaterialInstance;
+		UMaterialInstance* WeaponDissolveMat = CharacterData->CharacterInfos.CharacterWeaponInfos.WeaponDissolveMaterialInstance;
+		
+		if (IsValid(BodyDissolveMat))
+		{
+			UMaterialInstanceDynamic* DynamicMatInst = UMaterialInstanceDynamic::Create(BodyDissolveMat, this);
+			GetMesh()->SetMaterial(0, DynamicMatInst);
+			StartDissolveTimeline(DynamicMatInst);
+		}
+		if (IsValid(WeaponDissolveMat))
+		{
+			UMaterialInstanceDynamic* DynamicMatInst = UMaterialInstanceDynamic::Create(WeaponDissolveMat, this);
+			Weapon->SetMaterial(0, DynamicMatInst);
+			StartWeaponDissolveTimeline(DynamicMatInst);
+		}
 	}
 }
 
@@ -135,7 +141,7 @@ void AAuraCharacterBase::SetupWeapon(UAuraCharacterData* Data) const
 {
 	if (Data)
 	{
-		Weapon->SetSkeletalMeshAsset(Data->GetWeaponMeshData());
+		Weapon->SetSkeletalMeshAsset(Data->CharacterInfos.CharacterWeaponInfos.WeaponMesh);
 	}
 }
 

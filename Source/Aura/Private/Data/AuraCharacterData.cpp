@@ -13,11 +13,6 @@ USkeletalMesh* UAuraCharacterData::GetCharacterMeshData() const
 	return nullptr;
 }
 
-EAuraCharacterClass UAuraCharacterData::GetCharacterClassData() const
-{
-	return CharacterInfos.CharacterClass;
-}
-
 TSubclassOf<UAnimInstance> UAuraCharacterData::GetCharacterAnimClassData() const
 {
 	if (CharacterInfos.CharacterAnimClass)
@@ -27,42 +22,9 @@ TSubclassOf<UAnimInstance> UAuraCharacterData::GetCharacterAnimClassData() const
 	return nullptr;
 }
 
-USkeletalMesh* UAuraCharacterData::GetWeaponMeshData() const
-{
-	if (CharacterInfos.CharacterWeapon.WeaponMesh)
-	{
-		return CharacterInfos.CharacterWeapon.WeaponMesh;
-	}
-	return nullptr;
-}
-
-UTexture2D* UAuraCharacterData::GetCharacterIconData() const
-{
-	if (CharacterInfos.CharacterIcon)
-	{
-		return CharacterInfos.CharacterIcon;
-	}
-	return nullptr;
-}
-
-FName UAuraCharacterData::GetCharacterNameData() const
-{
-	if (CharacterInfos.CharacterName != "")
-	{
-		return CharacterInfos.CharacterName;
-	}
-	return "";
-}
-
 FAuraCharacterData_CharacterInfos UAuraCharacterData::GetCharacterInfosData() const
 {
 	return CharacterInfos;
-}
-
-FAuraCharacterData_WeaponInfos UAuraCharacterData::GetCharacterWeaponInfos() const
-{
-	if (CharacterInfos.CharacterWeapon.WeaponMesh == nullptr) return FAuraCharacterData_WeaponInfos();
-	return CharacterInfos.CharacterWeapon;
 }
 
 FAuraCharacterData_CharacterAnimMontages UAuraCharacterData::GetCharacterAnimMontageData() const
