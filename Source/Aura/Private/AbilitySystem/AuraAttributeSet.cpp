@@ -12,6 +12,8 @@
 #include "Net/UnrealNetwork.h"
 #include "Data/AuraCharacterData.h"
 #include "Interaction/CombatInterface.h"
+#include "Kismet/GameplayStatics.h"
+#include "Player/AuraPlayerController.h"
 
 
 UAuraAttributeSet::UAuraAttributeSet()
@@ -212,8 +214,10 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			}
 			else
 			{
-				ApplyHitReactTagToTarget(FAuraGameplayTags::Get().Abilities_Effects_HitReact, Props.TargetAvatarActor, Props.TargetASC);
+				ApplyHitReactTagToTarget(Props, FAuraGameplayTags::Get().Abilities_Effects_HitReact);
 			}
+			
+			ShowFloatingDamageText(Props, LocalIncomingDamage);
 		}
 	}
 }
@@ -251,11 +255,11 @@ void UAuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData
 	}
 }
 
-void UAuraAttributeSet::ApplyHitReactTagToTarget(FGameplayTag HitReactTag, AActor* TargetAvatarActor, UAbilitySystemComponent* ASC)
+void UAuraAttributeSet::ApplyHitReactTagToTarget(const FAuraEffectProperties& Props, FGameplayTag HitReactTag) const
 {
-	check(ASC);
+	check(Props.TargetASC);
 
-	if (const UAuraCharacterData* Data = Cast<UAuraCharacterData>(UAuraAbilitySystemLibrary::GetCharacterData(this, TargetAvatarActor)))
+	if (const UAuraCharacterData* Data = Cast<UAuraCharacterData>(UAuraAbilitySystemLibrary::GetCharacterData(this, Props.TargetAvatarActor)))
 	{
 		for (const FAuraCommonAbilitiesInfo& AbilityInfo : Data->CharacterAbilitySet->GrantedCommonAbilitiesData->CommonAbilitiesInfos)
 		{
@@ -263,8 +267,19 @@ void UAuraAttributeSet::ApplyHitReactTagToTarget(FGameplayTag HitReactTag, AActo
 			{
 				FGameplayTagContainer TagContainer;
 				TagContainer.AddTag(HitReactTag);
-				ASC->TryActivateAbilitiesByTag(TagContainer);
+				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
 			}
+		}
+	}
+}
+
+void UAuraAttributeSet::ShowFloatingDamageText(const FAuraEffectProperties& Props, float Damage)
+{
+	if (Props.SourceCharacter != Props.TargetCharacter)
+	{
+		if (AAuraPlayerController* PC = Cast<AAuraPlayerController>(UGameplayStatics::GetPlayerController(Props.SourceCharacter, 0)))
+		{
+			PC->ShowDamageNumber(Damage, Props.TargetCharacter);
 		}
 	}
 }
