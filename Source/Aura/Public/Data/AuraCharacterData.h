@@ -83,11 +83,14 @@ class AURA_API UAuraCharacterData : public UPrimaryDataAsset
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Character Default Infos")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Character Defaults")
 	FAuraCharacterData_CharacterInfos CharacterInfos;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Character Ability Infos")
-	UAuraAbilitySetData* CharacterAbilitySet;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Ability System")
+	TObjectPtr<UAuraAbilitySetData> CharacterAbilitySet;
+
+	UPROPERTY(EditDefaultsOnly, Category="Ability System")
+	TObjectPtr<UCurveTable> DamageCalculationCoefficients;
 
 	USkeletalMesh* GetCharacterMeshData() const;
 	TSubclassOf<UAnimInstance> GetCharacterAnimClassData() const;
