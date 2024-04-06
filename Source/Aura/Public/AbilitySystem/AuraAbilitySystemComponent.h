@@ -23,7 +23,6 @@ public:
 
 	void AbilityInputTagHeld(const FGameplayTag& InputTag);
 	void AbilityInputTagReleased(const FGameplayTag& InputTag);
-
 	void ProcessAbilityInput(float DeltaTime, bool bGameIsPaused);
 	void ClearAbilityInput();
 
