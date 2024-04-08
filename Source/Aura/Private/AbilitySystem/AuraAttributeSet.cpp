@@ -216,8 +216,11 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			{
 				ApplyHitReactTagToTarget(Props, FAuraGameplayTags::Get().Abilities_Effects_HitReact);
 			}
+
 			
-			ShowFloatingDamageText(Props, LocalIncomingDamage);
+			const bool bBlock = UAuraAbilitySystemLibrary::IsBlockedHit(Props.EffectContextHandle);
+			const bool bCriticalHit = UAuraAbilitySystemLibrary::IsCriticalHit(Props.EffectContextHandle);
+			ShowFloatingDamageText(Props, LocalIncomingDamage, bBlock, bCriticalHit);
 		}
 	}
 }
@@ -273,7 +276,7 @@ void UAuraAttributeSet::ApplyHitReactTagToTarget(const FAuraEffectProperties& Pr
 	}
 }
 
-void UAuraAttributeSet::ShowFloatingDamageText(const FAuraEffectProperties& Props, float Damage)
+void UAuraAttributeSet::ShowFloatingDamageText(const FAuraEffectProperties& Props, float Damage, bool bBlockedHit, bool bCriticalHit)
 {
 	if (Props.SourceCharacter != Props.TargetCharacter)
 	{

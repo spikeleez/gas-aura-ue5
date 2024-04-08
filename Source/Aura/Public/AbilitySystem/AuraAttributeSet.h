@@ -201,5 +201,5 @@ protected:
 private:
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FAuraEffectProperties& Props) const;
 	void ApplyHitReactTagToTarget(const FAuraEffectProperties& Props, FGameplayTag HitReactTag) const;
-	void ShowFloatingDamageText(const FAuraEffectProperties& Props, float Damage);
+	void ShowFloatingDamageText(const FAuraEffectProperties& Props, float Damage, bool bBlockedHit, bool bCriticalHit);
 };
