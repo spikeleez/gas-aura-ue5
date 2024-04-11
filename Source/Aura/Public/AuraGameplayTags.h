@@ -60,8 +60,11 @@ struct FAuraGameplayTags
  inline CREATE_NATIVE_TAG(Input_Ability_3, "Ability Input Tag for 3 Key");
  inline CREATE_NATIVE_TAG(Input_Ability_4, "Ability Input Tag for 4 Key");
 
- /* Damage Tags */
- inline CREATE_NATIVE_TAG(Damage, "A Damage Tag");
+ /* Damages Tags */
+ inline CREATE_NATIVE_TAG(Damage, "A Damage Tag.");
+ inline CREATE_NATIVE_TAG(Damage_Fire, "A Fire Damage Type Tag.");
+
+ FGameplayTagContainer DamageTypes;
 
  /* Abilities Tag */
  

@@ -21,7 +21,4 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Aura|CharacterData|AnimMontage")
 	UAnimMontage* GetOwnerAbilityCharacterDataHitReactAnimMontage();
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Ability|Damage")
-	FScalableFloat AbilityDamage;
 };
