@@ -36,6 +36,12 @@ protected:
 	virtual void SetupInputComponent() override;
 	virtual void PostProcessInput(const float DeltaTime, const bool bGamePaused) override;
 
+	UPROPERTY(BlueprintReadOnly, Category="Cursor")
+	bool bCursorIsHoveredActor = false;
+
+	UPROPERTY(BlueprintReadOnly, Category="Cursor")
+	FHitResult CursorHit;
+
 private:
 	void AbilityInputTagPressed(FGameplayTag InputTag);
 	void AbilityInputTagReleased(FGameplayTag InputTag);
@@ -51,7 +57,6 @@ private:
 	void CursorTrace();
 	IEnemyInterface* LastActor = nullptr;
 	IEnemyInterface* ThisActor = nullptr;
-	FHitResult CursorHit;
 
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputMappingContext> AuraContext;
