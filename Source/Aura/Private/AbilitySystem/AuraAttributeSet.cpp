@@ -216,7 +216,6 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			{
 				ApplyHitReactTagToTarget(Props, FAuraGameplayTags::Get().Abilities_Effects_HitReact);
 			}
-
 			
 			const bool bBlock = UAuraAbilitySystemLibrary::IsBlockedHit(Props.EffectContextHandle);
 			const bool bCriticalHit = UAuraAbilitySystemLibrary::IsCriticalHit(Props.EffectContextHandle);
@@ -276,13 +275,13 @@ void UAuraAttributeSet::ApplyHitReactTagToTarget(const FAuraEffectProperties& Pr
 	}
 }
 
-void UAuraAttributeSet::ShowFloatingDamageText(const FAuraEffectProperties& Props, float Damage, bool bBlockedHit, bool bCriticalHit)
+void UAuraAttributeSet::ShowFloatingDamageText(const FAuraEffectProperties& Props, float Damage, bool bBlockedHit, bool bCriticalHit) const
 {
 	if (Props.SourceCharacter != Props.TargetCharacter)
 	{
 		if (AAuraPlayerController* PC = Cast<AAuraPlayerController>(UGameplayStatics::GetPlayerController(Props.SourceCharacter, 0)))
 		{
-			PC->ShowDamageNumber(Damage, Props.TargetCharacter);
+			PC->ShowDamageNumber(Damage, Props.TargetCharacter, bBlockedHit, bCriticalHit);
 		}
 	}
 }

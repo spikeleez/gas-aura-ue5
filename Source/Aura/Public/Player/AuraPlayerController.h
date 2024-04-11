@@ -26,7 +26,7 @@ public:
 	virtual void PlayerTick(float DeltaTime) override;
 
 	UFUNCTION(Client, Reliable)
-	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter);
+	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter, bool bBlockedHit, bool bCriticalHit);
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Input")
 	bool bShiftKeyDown = false;
