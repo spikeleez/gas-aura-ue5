@@ -68,8 +68,11 @@ void AAuraCharacterBase::InitAbilityActorInfo()
 	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 
 	// Initialize Default Attributes (Only Enemies and NPCs). You can override this function for players.
-	InitializeDefaultAbilities();
-	InitializeDefaultAttributes();
+	if (HasAuthority())
+	{
+		InitializeDefaultAbilities();
+		InitializeDefaultAttributes();
+	}
 }
 
 void AAuraCharacterBase::BindCallbackHealthBarDelegates()
