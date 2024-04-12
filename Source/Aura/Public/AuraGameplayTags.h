@@ -50,6 +50,12 @@ struct FAuraGameplayTags
  inline CREATE_NATIVE_TAG(Attributes_Vital_Health, "Amount of Health.");
  inline CREATE_NATIVE_TAG(Attributes_Vital_Mana, "Amount of Mana.");
 
+ /* Resistances Attributes */
+ inline CREATE_NATIVE_TAG(Attributes_Resistance_Fire, "A Fire Resistance Tag.");
+ inline CREATE_NATIVE_TAG(Attributes_Resistance_Lightning, "A Lightning Resistance Tag.");
+ inline CREATE_NATIVE_TAG(Attributes_Resistance_Arcane, "A Arcane Resistance Tag.");
+ inline CREATE_NATIVE_TAG(Attributes_Resistance_Physical, "A Physical Resistance Tag.");
+
  /* Input Tags */
  inline CREATE_NATIVE_TAG(Input_Native_Move, "Native Input Tag for Move Action");
  inline CREATE_NATIVE_TAG(Input_Native_Shift, "Native Input Tag for Shift Key");
@@ -61,13 +67,15 @@ struct FAuraGameplayTags
  inline CREATE_NATIVE_TAG(Input_Ability_4, "Ability Input Tag for 4 Key");
 
  /* Damages Tags */
+ TMap<FGameplayTag, FGameplayTag> DamageTypesToResistance;
+ 
  inline CREATE_NATIVE_TAG(Damage, "A Damage Tag.");
  inline CREATE_NATIVE_TAG(Damage_Fire, "A Fire Damage Type Tag.");
-
- FGameplayTagContainer DamageTypes;
+ inline CREATE_NATIVE_TAG(Damage_Lightning, "A Lightning Damage Type Tag.");
+ inline CREATE_NATIVE_TAG(Damage_Arcane, "A Arcane Damage Type Tag.");
+ inline CREATE_NATIVE_TAG(Damage_Physical, "A Physical Damage Type Tag.");
 
  /* Abilities Tag */
- 
  
  /* Abilities Effect Tags */
  inline CREATE_NATIVE_TAG(Abilities_Effects_HitReact, "A Ability Hit React Tag.");
