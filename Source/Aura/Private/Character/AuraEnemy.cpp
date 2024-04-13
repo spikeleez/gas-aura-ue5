@@ -71,12 +71,10 @@ void AAuraEnemy::BeginPlay()
 	// Initialize Ability Actor Info - Full Function for the Enemies.
 	InitAbilityActorInfo();
 
-	AbilitySystemComponent->RegisterGameplayTagEvent(FAuraGameplayTags::Get().Abilities_Effects_HitReact,
-		EGameplayTagEventType::NewOrRemoved).AddUObject(this, &AAuraEnemy::HitReactTagChanged);
-}
-
-void AAuraEnemy::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
-{
-	bHitReacting = NewCount > 0;
-	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : BaseWalkSpeed;
+	AbilitySystemComponent->RegisterGameplayTagEvent(FAuraGameplayTags::Get().Status_Effect_HitReact,
+		EGameplayTagEventType::NewOrRemoved).AddLambda([this](FGameplayTag CallbackTag, int32 NewCount)
+		{
+			bHitReacting = NewCount > 0;
+			GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : BaseWalkSpeed;
+		});
 }

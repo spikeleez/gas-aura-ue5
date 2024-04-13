@@ -36,9 +36,11 @@ protected:
 	virtual void SetupInputComponent() override;
 	virtual void PostProcessInput(const float DeltaTime, const bool bGamePaused) override;
 
+	//TODO: Debug only - Delete This Variable
 	UPROPERTY(BlueprintReadOnly, Category="Cursor")
 	bool bCursorIsHoveredActor = false;
 
+	//TODO: Debug only - Move to Private Section and Remove all UPROPERTIES.
 	UPROPERTY(BlueprintReadOnly, Category="Cursor")
 	FHitResult CursorHit;
 

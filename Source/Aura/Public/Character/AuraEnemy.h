@@ -32,8 +32,6 @@ public:
 	virtual void Die() override;
 	/* End Combat Interface */
 
-	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
-
 	UPROPERTY(BlueprintReadOnly)
 	bool bHighlighted = false;
 

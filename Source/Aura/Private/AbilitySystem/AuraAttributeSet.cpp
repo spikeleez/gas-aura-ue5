@@ -247,7 +247,7 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			}
 			else
 			{
-				ApplyHitReactTagToTarget(Props, FAuraGameplayTags::Get().Abilities_Effects_HitReact);
+				ApplyHitReactTagToTarget(Props, FAuraGameplayTags::Get().Abilities_Action_HitReact);
 			}
 			
 			const bool bBlock = UAuraAbilitySystemLibrary::IsBlockedHit(Props.EffectContextHandle);
@@ -300,9 +300,10 @@ void UAuraAttributeSet::ApplyHitReactTagToTarget(const FAuraEffectProperties& Pr
 		{
 			if (AbilityInfo.AbilityTag.MatchesTagExact(HitReactTag))
 			{
-				FGameplayTagContainer TagContainer;
-				TagContainer.AddTag(HitReactTag);
-				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+				//FGameplayTagContainer TagContainer;
+				//TagContainer.AddTag(HitReactTag);
+				//Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+				Props.TargetASC->TryActivateAbilityByClass(AbilityInfo.Ability);
 			}
 		}
 	}
