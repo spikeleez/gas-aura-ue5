@@ -34,42 +34,45 @@ public:
 	AAuraEffectActor();
 
 protected:
-	UFUNCTION(BlueprintCallable, Category="Gameplay Effects|Effect")
+	UFUNCTION(BlueprintCallable, Category="GameplayEffects|Effect")
 	void ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGameplayEffect> GameplayEffectClass);
 
-	UFUNCTION(BlueprintCallable, Category="Gameplay Effects|Overlap")
+	UFUNCTION(BlueprintCallable, Category="GameplayEffects|Overlap")
 	void OnOverlap(AActor* TargetActor);
 
-	UFUNCTION(BlueprintCallable, Category="Gameplay Effects|Overlap")
+	UFUNCTION(BlueprintCallable, Category="GameplayEffects|Overlap")
 	void OnEndOverlap(AActor* TargetActor);
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gameplay Effects")
-	bool bDestroyOnEffectRemoval = false;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GameplayEffects")
+	bool bDestroyOnEffectApplication = true;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gameplay Effects|Instant Gameplay Effect")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GameplayEffects")
+	bool bApplyEffectsToEnemies = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GameplayEffects")
+	float ActorLevel = 1.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GameplayEffects|InstantGameplayEffect")
 	TSubclassOf<UGameplayEffect> InstantGameplayEffectClass;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gameplay Effects|Instant Gameplay Effect")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GameplayEffects|InstantGameplayEffect")
 	EAuraEffectApplicationPolicy InstantEffectApplicationPolicy = EAuraEffectApplicationPolicy::DoNotApply;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gameplay Effects|Duration Gameplay Effect")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GameplayEffects|DurationGameplayEffect")
 	TSubclassOf<UGameplayEffect> DurationGameplayEffectClass;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gameplay Effects|Duration Gameplay Effect")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GameplayEffects|DurationGameplayEffect")
 	EAuraEffectApplicationPolicy DurationEffectApplicationPolicy = EAuraEffectApplicationPolicy::DoNotApply;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gameplay Effects|Infinite Gameplay Effect")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GameplayEffects|InfiniteGameplayEffect")
 	TSubclassOf<UGameplayEffect> InfiniteGameplayEffectClass;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gameplay Effects|Infinite Gameplay Effect")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GameplayEffects|InfiniteGameplayEffect")
 	EAuraEffectApplicationPolicy InfiniteEffectApplicationPolicy = EAuraEffectApplicationPolicy::DoNotApply;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gameplay Effects|Infinite Gameplay Effect")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GameplayEffects|InfiniteGameplayEffect")
 	EAuraEffectRemovalPolicy InfiniteEffectRemovalPolicy = EAuraEffectRemovalPolicy::RemoveOnEndOverlap;
 
 	UPROPERTY()
 	TMap<FActiveGameplayEffectHandle, UAbilitySystemComponent*> ActiveEffectHandles;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gameplay Effects")
-	float ActorLevel = 1.f;
 };
