@@ -98,8 +98,8 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	AActor* SourceAvatar = SourceASC ? SourceASC->GetAvatarActor() : nullptr;
 	AActor* TargetAvatar = TargetASC ? TargetASC->GetAvatarActor() : nullptr;
 	
-	const UAuraCharacterData* SourceCharacterData = UAuraAbilitySystemLibrary::GetCharacterData(SourceAvatar, SourceAvatar);
-	const UAuraCharacterData* TargetCharacterData = UAuraAbilitySystemLibrary::GetCharacterData(TargetAvatar, TargetAvatar);
+	const UAuraCharacterData* SourceCharacterData = UAuraAbilitySystemLibrary::AuraGetCharacterData(SourceAvatar, SourceAvatar);
+	const UAuraCharacterData* TargetCharacterData = UAuraAbilitySystemLibrary::AuraGetCharacterData(TargetAvatar, TargetAvatar);
 
 	ICombatInterface* SourceCombatInterface = Cast<ICombatInterface>(SourceAvatar);
 	ICombatInterface* TargetCombatInterface = Cast<ICombatInterface>(TargetAvatar);

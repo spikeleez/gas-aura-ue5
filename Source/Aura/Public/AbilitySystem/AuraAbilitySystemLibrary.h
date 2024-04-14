@@ -36,7 +36,10 @@ public:
 	static UAttributeMenuWidgetController* GetAttributeMenuWidgetController(const UObject* WorldContext = nullptr);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Aura Ability System Library|Character Data")
-	static UAuraCharacterData* GetCharacterData(const UObject* WorldContext, AActor* Actor);
+	static UAuraCharacterData* AuraGetCharacterData(const UObject* WorldContext, AActor* Actor);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Aura Ability System Library|Character Data")
+	static EAuraCharacterClass AuraGetCharacterClass(const UObject* WorldContext, UAuraCharacterData* CharacterData);
 
 	UFUNCTION(BlueprintPure, Category="Aura Ability System Library|Gameplay Effect")
 	static bool IsBlockedHit(const FGameplayEffectContextHandle& EffectContextHandle);

@@ -101,7 +101,7 @@ UAttributeMenuWidgetController* UAuraAbilitySystemLibrary::GetAttributeMenuWidge
 	return nullptr;
 }
 
-UAuraCharacterData* UAuraAbilitySystemLibrary::GetCharacterData(const UObject* WorldContext, AActor* Actor)
+UAuraCharacterData* UAuraAbilitySystemLibrary::AuraGetCharacterData(const UObject* WorldContext, AActor* Actor)
 {
 	check(Actor);
 
@@ -113,6 +113,14 @@ UAuraCharacterData* UAuraAbilitySystemLibrary::GetCharacterData(const UObject* W
 		}
 	}
 	return nullptr;
+}
+
+EAuraCharacterClass UAuraAbilitySystemLibrary::AuraGetCharacterClass(const UObject* WorldContext,
+	UAuraCharacterData* CharacterData)
+{
+	check(CharacterData);
+
+	return CharacterData->CharacterInfos.CharacterClass;
 }
 
 bool UAuraAbilitySystemLibrary::IsBlockedHit(const FGameplayEffectContextHandle& EffectContextHandle)

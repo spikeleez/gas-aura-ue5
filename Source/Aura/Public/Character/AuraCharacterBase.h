@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
+#include "Data/AuraCharacterData.h"
 #include "Interaction/CombatInterface.h"
 #include "UI/WidgetController/OverlayWidgetController.h"
 #include "AuraCharacterBase.generated.h"
@@ -39,6 +40,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Character Data")
 	UAuraCharacterData* GetCharacterData();
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Character Data")
+	EAuraCharacterClass GetCharacterClass();
 
 	virtual void Die() override;
 

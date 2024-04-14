@@ -294,7 +294,7 @@ void UAuraAttributeSet::ApplyHitReactTagToTarget(const FAuraEffectProperties& Pr
 {
 	check(Props.TargetASC);
 
-	if (const UAuraCharacterData* Data = Cast<UAuraCharacterData>(UAuraAbilitySystemLibrary::GetCharacterData(this, Props.TargetAvatarActor)))
+	if (const UAuraCharacterData* Data = Cast<UAuraCharacterData>(UAuraAbilitySystemLibrary::AuraGetCharacterData(this, Props.TargetAvatarActor)))
 	{
 		for (const FAuraCommonAbilitiesInfo& AbilityInfo : Data->CharacterAbilitySet->GrantedCommonAbilitiesData->CommonAbilitiesInfos)
 		{

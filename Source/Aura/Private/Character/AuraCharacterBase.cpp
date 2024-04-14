@@ -155,6 +155,11 @@ UAuraCharacterData* AAuraCharacterBase::GetCharacterData()
 	return nullptr;
 }
 
+EAuraCharacterClass AAuraCharacterBase::GetCharacterClass()
+{
+	return UAuraAbilitySystemLibrary::AuraGetCharacterClass(this, GetCharacterData());
+}
+
 void AAuraCharacterBase::Die()
 {
 	Weapon->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));
