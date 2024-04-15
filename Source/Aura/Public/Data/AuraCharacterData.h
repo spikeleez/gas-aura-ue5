@@ -46,31 +46,31 @@ struct FAuraCharacterData_CharacterInfos
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category=CharacterDefaults)
 	FName CharacterName = "Character Name";
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category=CharacterDefaults)
 	EAuraCharacterClass CharacterClass = EAuraCharacterClass::Warrior;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category=CharacterDefaults)
 	TSubclassOf<UAnimInstance> CharacterAnimClass = nullptr;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category=CharacterDefaults)
 	USkeletalMesh* CharacterMesh = nullptr;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category=CharacterDefaults)
 	UTexture2D* CharacterIcon = nullptr;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category=CharacterDefaults)
 	float BodyLifeSpan = 5.f;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category=CharacterDefaults)
 	UMaterialInstance* BodyDissolveMaterialInstance = nullptr;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category=CharacterDefaults)
 	FAuraCharacterData_WeaponInfos CharacterWeaponInfos;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category=CharacterDefaults)
 	FAuraCharacterData_CharacterAnimMontages CharacterAnimMontage;
 };
 

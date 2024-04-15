@@ -4,6 +4,7 @@
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 
 #include "AuraAbilityTypes.h"
+#include "AuraGameplayTags.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "Character/AuraCharacterBase.h"
 #include "Data/AuraAbilitySetData.h"
@@ -46,6 +47,15 @@ void UAuraAbilitySystemLibrary::GiveGrantedAbilities(const UObject* WorldContext
 		{
 			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(GameplayAbilities.GameplayAbility, GameplayAbilities.AbilityLevel);
 			AbilitySpec.DynamicAbilityTags.AddTag(GameplayAbilities.AbilityTag);
+			
+			//Add Gameplay Ability Tag to Ability Tags -- Use this code bellow!
+			/*
+			if (!GameplayAbilities.AbilityTag.MatchesTag(FAuraGameplayTags::Get().Input))
+			{
+				AbilitySpec.Ability->AbilityTags.AddTag(GameplayAbilities.AbilityTag);
+			}
+			*/
+			
 			ASC->GiveAbility(AbilitySpec);
 		}
 		// TODO: Tag RelationShip Logic Here!

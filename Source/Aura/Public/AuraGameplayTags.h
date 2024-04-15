@@ -57,6 +57,7 @@ struct FAuraGameplayTags
  inline CREATE_NATIVE_TAG(Attributes_Resistance_Physical, "A Physical Resistance Tag.");
 
  /* Input Tags */
+ inline CREATE_NATIVE_TAG(Input, "Simple Input Tag.");
  inline CREATE_NATIVE_TAG(Input_Native_Move, "Native Input Tag for Move Action");
  inline CREATE_NATIVE_TAG(Input_Native_Shift, "Native Input Tag for Shift Key");
  inline CREATE_NATIVE_TAG(Input_Ability_LMB, "Ability Input Tag for Left Mouse Button");
@@ -77,6 +78,7 @@ struct FAuraGameplayTags
 
  /* Abilities Tag */
  inline CREATE_NATIVE_TAG(Abilities_Action_HitReact, "A Ability Hit React Tag.");
+ inline CREATE_NATIVE_TAG(Abilities_Action_Attack, "A Simple tag for Attack Abilities.");
 
  /* Status Tag */
  inline CREATE_NATIVE_TAG(Status_Effect_HitReact, "A Hit React Status Tag.");
