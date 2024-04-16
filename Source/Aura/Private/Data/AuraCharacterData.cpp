@@ -3,31 +3,22 @@
 
 #include "Data/AuraCharacterData.h"
 
-
-USkeletalMesh* UAuraCharacterData::GetCharacterMeshData() const
+FAuraCharacterInfo UAuraCharacterData::GetCharacterInfoData() const
 {
-	if (CharacterInfos.CharacterMesh)
-	{
-		return CharacterInfos.CharacterMesh;
-	}
-	return nullptr;
+	return CharacterInfo;
 }
 
-TSubclassOf<UAnimInstance> UAuraCharacterData::GetCharacterAnimClassData() const
+FAuraAnimationInfo UAuraCharacterData::GetAnimationInfoData() const
 {
-	if (CharacterInfos.CharacterAnimClass)
-	{
-		return CharacterInfos.CharacterAnimClass;
-	}
-	return nullptr;
+	return AnimationInfo;
 }
 
-FAuraCharacterData_CharacterInfos UAuraCharacterData::GetCharacterInfosData() const
+FAuraWeaponInfo UAuraCharacterData::GetWeaponInfoData() const
 {
-	return CharacterInfos;
+	return WeaponInfo;
 }
 
-FAuraCharacterData_CharacterAnimMontages UAuraCharacterData::GetCharacterAnimMontageData() const
+FAuraAbilityInfo UAuraCharacterData::GetAbilityInfoData() const
 {
-	return CharacterInfos.CharacterAnimMontage;
+	return AbilityInfo;
 }

@@ -16,11 +16,20 @@ UAuraCharacterData* UAuraGameplayAbility::GetOwnerAbilityCharacterData()
 	return nullptr;
 }
 
+AAuraCharacterBase* UAuraGameplayAbility::GetOwnerAbilityCharacterBase()
+{
+	if (AAuraCharacterBase* CharacterBase = Cast<AAuraCharacterBase>(GetAvatarActorFromActorInfo()))
+	{
+		return CharacterBase;
+	}
+	return nullptr;
+}
+
 UAnimMontage* UAuraGameplayAbility::GetOwnerAbilityCharacterDataHitReactAnimMontage()
 {
 	if (GetOwnerAbilityCharacterData())
 	{
-		if (UAnimMontage* HitReactMontage = GetOwnerAbilityCharacterData()->CharacterInfos.CharacterAnimMontage.HitReactMontage)
+		if (UAnimMontage* HitReactMontage = GetOwnerAbilityCharacterData()->AnimationInfo.HitReactMontage)
 		{
 			return HitReactMontage;
 		}

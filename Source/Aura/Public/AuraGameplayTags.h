@@ -83,6 +83,18 @@ struct FAuraGameplayTags
  /* Status Tag */
  inline CREATE_NATIVE_TAG(Status_Effect_HitReact, "A Hit React Status Tag.");
 
+ /* Montage Tags */
+ inline CREATE_NATIVE_TAG(Montage, "A Montage Tag");
+ inline CREATE_NATIVE_TAG(Montage_Attack, "A Montage Attack Tag");
+ inline CREATE_NATIVE_TAG(Montage_Attack_Melee, "For Melee Montage Attacks Tag");
+ inline CREATE_NATIVE_TAG(Montage_Attack_Ranged, "For Ranged Montage Attacks Tag");
+ inline CREATE_NATIVE_TAG(Montage_Attack_Melee_A, "A Melee A Attack Montage Tag");
+ inline CREATE_NATIVE_TAG(Montage_Attack_Melee_B, "A Melee B Attack Montage Tag");
+ inline CREATE_NATIVE_TAG(Montage_Attack_Melee_C, "A Melee C Attack Montage Tag");
+ inline CREATE_NATIVE_TAG(Montage_Attack_Ranged_A, "A Ranged A Attack Montage Tag");
+ inline CREATE_NATIVE_TAG(Montage_Attack_Ranged_B, "A Ranged B Attack Montage Tag");
+ inline CREATE_NATIVE_TAG(Montage_Attack_Ranged_C, "A Ranged C Attack Montage Tag");
+
 private:
  static FAuraGameplayTags GameplayTags;
 };

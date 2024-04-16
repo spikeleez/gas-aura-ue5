@@ -296,14 +296,17 @@ void UAuraAttributeSet::ApplyHitReactTagToTarget(const FAuraEffectProperties& Pr
 
 	if (const UAuraCharacterData* Data = Cast<UAuraCharacterData>(UAuraAbilitySystemLibrary::AuraGetCharacterData(this, Props.TargetAvatarActor)))
 	{
-		for (const FAuraCommonAbilitiesInfo& AbilityInfo : Data->CharacterAbilitySet->GrantedCommonAbilitiesData->CommonAbilitiesInfos)
+		if (UAuraCommonAbilitiesData* CommonAbilities = Cast<UAuraCommonAbilitiesData>(Data->AbilityInfo.AbilitySetData->GrantedCommonAbilities))
 		{
-			if (AbilityInfo.AbilityTag.MatchesTagExact(HitReactTag))
+			for (const FAuraCommonAbilitiesInfo& AbilityInfo : CommonAbilities->CommonAbilitiesInfo)
 			{
-				//FGameplayTagContainer TagContainer;
-				//TagContainer.AddTag(HitReactTag);
-				//Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
-				Props.TargetASC->TryActivateAbilityByClass(AbilityInfo.Ability);
+				if (AbilityInfo.AbilityTag.MatchesTagExact(HitReactTag))
+				{
+					//FGameplayTagContainer TagContainer;
+					//TagContainer.AddTag(HitReactTag);
+					//Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+					Props.TargetASC->TryActivateAbilityByClass(AbilityInfo.Ability);
+				}
 			}
 		}
 	}

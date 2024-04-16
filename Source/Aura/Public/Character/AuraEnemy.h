@@ -25,6 +25,8 @@ public:
 	/* Enemy Interface */
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
+	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget) override;
+	virtual AActor* GetCombatTarget_Implementation() const override;
 	/* End Enemy Interface */
 
 	/* Combat Interface */
@@ -38,8 +40,12 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category="Combat")
 	bool bHitReacting = false;
 
+	UPROPERTY(BlueprintReadWrite, Category="Combat")
+	TObjectPtr<AActor> CombatTarget;
+
 	UPROPERTY(BlueprintReadOnly, Category="Character Class Defaults")
 	float BaseWalkSpeed = 250.f;
+
 	
 protected:
 	virtual void BeginPlay() override;

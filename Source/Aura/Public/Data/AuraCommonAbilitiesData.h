@@ -33,6 +33,6 @@ class AURA_API UAuraCommonAbilitiesData : public UDataAsset
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Common Abilities Info")
-	TArray<FAuraCommonAbilitiesInfo> CommonAbilitiesInfos;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="AbilitySettings")
+	TArray<FAuraCommonAbilitiesInfo> CommonAbilitiesInfo;
 };

@@ -7,6 +7,7 @@
 #include "Data/AuraCharacterData.h"
 #include "AuraGameplayAbility.generated.h"
 
+class AAuraCharacterBase;
 /**
  * 
  */
@@ -18,6 +19,9 @@ class AURA_API UAuraGameplayAbility : public UGameplayAbility
 public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Aura|CharacterData")
 	UAuraCharacterData* GetOwnerAbilityCharacterData();
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Aura|CharacterData")
+	AAuraCharacterBase* GetOwnerAbilityCharacterBase();
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Aura|CharacterData|AnimMontage")
 	UAnimMontage* GetOwnerAbilityCharacterDataHitReactAnimMontage();

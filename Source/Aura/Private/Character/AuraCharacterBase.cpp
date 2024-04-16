@@ -107,15 +107,15 @@ FVector AAuraCharacterBase::GetCombatSocketLocation()
 {
 	check(Weapon);
 	check(CharacterData);
-	return Weapon->GetSocketLocation(CharacterData->CharacterInfos.CharacterWeaponInfos.WeaponSocket);
+	return Weapon->GetSocketLocation(CharacterData->WeaponInfo.WeaponSocket);
 }
 
 void AAuraCharacterBase::Dissolve()
 {
 	if (CharacterData)
 	{
-		UMaterialInstance* BodyDissolveMat = CharacterData->CharacterInfos.BodyDissolveMaterialInstance;
-		UMaterialInstance* WeaponDissolveMat = CharacterData->CharacterInfos.CharacterWeaponInfos.WeaponDissolveMaterialInstance;
+		UMaterialInstance* BodyDissolveMat = CharacterData->CharacterInfo.CharacterDissolveMaterial;
+		UMaterialInstance* WeaponDissolveMat = CharacterData->WeaponInfo.WeaponDissolveMaterial;
 		
 		if (IsValid(BodyDissolveMat))
 		{
@@ -136,8 +136,8 @@ void AAuraCharacterBase::SetupCharacter(UAuraCharacterData* Data) const
 {
 	if (Data)
 	{
-		GetMesh()->SetSkeletalMeshAsset(Data->GetCharacterMeshData());
-		GetMesh()->SetAnimInstanceClass(Data->GetCharacterAnimClassData());
+		GetMesh()->SetSkeletalMeshAsset(Data->CharacterInfo.CharacterMesh);
+		GetMesh()->SetAnimInstanceClass(Data->AnimationInfo.AnimClass);
 	}
 }
 
@@ -145,7 +145,7 @@ void AAuraCharacterBase::SetupWeapon(UAuraCharacterData* Data) const
 {
 	if (Data)
 	{
-		Weapon->SetSkeletalMeshAsset(Data->CharacterInfos.CharacterWeaponInfos.WeaponMesh);
+		Weapon->SetSkeletalMeshAsset(Data->WeaponInfo.WeaponMesh);
 	}
 }
 

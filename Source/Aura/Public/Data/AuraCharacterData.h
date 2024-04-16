@@ -3,75 +3,101 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "Engine/DataAsset.h"
 #include "AuraCharacterData.generated.h"
 
 class UAuraAbilitySetData;
 
-UENUM()
+UENUM(BlueprintType)
 enum class EAuraCharacterClass : uint8
 {
 	Warrior,
 	Wizard,
 	Ranger,
-	MAX UMETA(Hidden)
+};
+
+UENUM(BlueprintType)
+enum class EAuraWeaponClass : uint8
+{
+	Melee,
+	Ranged,
+	Special
 };
 
 USTRUCT(BlueprintType)
-struct FAuraCharacterData_WeaponInfos
+struct FAuraCharacterInfo
 {
 	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	USkeletalMesh* WeaponMesh = nullptr;
+	FName CharacterName = "Character Name";
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	EAuraCharacterClass CharacterClass = EAuraCharacterClass::Warrior;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	USkeletalMesh* CharacterMesh = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UTexture2D* CharacterIcon = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UMaterialInstance* CharacterDissolveMaterial = nullptr;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	float CharacterLifeSpan = 5.f;
+};
+
+USTRUCT(BlueprintType)
+struct FAuraWeaponInfo
+{
+	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FName WeaponSocket = "TipSocket";
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	UMaterialInstance* WeaponDissolveMaterialInstance = nullptr;
+	FName WeaponName = "Weapon Name";
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	EAuraWeaponClass WeaponClass = EAuraWeaponClass::Melee;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	USkeletalMesh* WeaponMesh = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UTexture2D* WeaponIcon = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UMaterialInstance* WeaponDissolveMaterial = nullptr;
 };
 
 USTRUCT(BlueprintType)
-struct FAuraCharacterData_CharacterAnimMontages
+struct FAuraAnimationInfo
 {
 	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSubclassOf<UAnimInstance> AnimClass = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UAnimMontage* HitReactMontage = nullptr;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TMap<FGameplayTag, UAnimMontage*> AttackMontages;
 };
 
 USTRUCT(BlueprintType)
-struct FAuraCharacterData_CharacterInfos
+struct FAuraAbilityInfo
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category=CharacterDefaults)
-	FName CharacterName = "Character Name";
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UAuraAbilitySetData* AbilitySetData;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category=CharacterDefaults)
-	EAuraCharacterClass CharacterClass = EAuraCharacterClass::Warrior;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category=CharacterDefaults)
-	TSubclassOf<UAnimInstance> CharacterAnimClass = nullptr;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category=CharacterDefaults)
-	USkeletalMesh* CharacterMesh = nullptr;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category=CharacterDefaults)
-	UTexture2D* CharacterIcon = nullptr;
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category=CharacterDefaults)
-	float BodyLifeSpan = 5.f;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category=CharacterDefaults)
-	UMaterialInstance* BodyDissolveMaterialInstance = nullptr;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category=CharacterDefaults)
-	FAuraCharacterData_WeaponInfos CharacterWeaponInfos;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category=CharacterDefaults)
-	FAuraCharacterData_CharacterAnimMontages CharacterAnimMontage;
+	UPROPERTY(EditDefaultsOnly)
+	UCurveTable* DamageCalculationCoefficients;
 };
 
 /**
@@ -83,17 +109,27 @@ class AURA_API UAuraCharacterData : public UPrimaryDataAsset
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Character Defaults")
-	FAuraCharacterData_CharacterInfos CharacterInfos;
+	UFUNCTION(BlueprintPure, Category="CharacterData")
+	FAuraCharacterInfo GetCharacterInfoData() const;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Ability System")
-	TObjectPtr<UAuraAbilitySetData> CharacterAbilitySet;
+	UFUNCTION(BlueprintPure, Category="CharacterData")
+	FAuraAnimationInfo GetAnimationInfoData() const;
 
-	UPROPERTY(EditDefaultsOnly, Category="Ability System")
-	TObjectPtr<UCurveTable> DamageCalculationCoefficients;
+	UFUNCTION(BlueprintPure, Category="CharacterData")
+	FAuraWeaponInfo GetWeaponInfoData() const;
 
-	USkeletalMesh* GetCharacterMeshData() const;
-	TSubclassOf<UAnimInstance> GetCharacterAnimClassData() const;
-	FAuraCharacterData_CharacterInfos GetCharacterInfosData() const;
-	FAuraCharacterData_CharacterAnimMontages GetCharacterAnimMontageData() const;
+	UFUNCTION(BlueprintPure, Category="CharacterData")
+	FAuraAbilityInfo GetAbilityInfoData() const;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="CharacterSettings")
+	FAuraCharacterInfo CharacterInfo;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="AnimationSettings")
+	FAuraAnimationInfo AnimationInfo;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="WeaponSettings")
+	FAuraWeaponInfo WeaponInfo;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="AbilitySettings")
+	FAuraAbilityInfo AbilityInfo;
 };

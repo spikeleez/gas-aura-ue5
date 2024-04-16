@@ -60,7 +60,8 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo();
 	virtual void BindCallbackHealthBarDelegates();
-	
+
+	UFUNCTION(BlueprintCallable, Category="Combat")
 	virtual FVector GetCombatSocketLocation() override;
 
 	void Dissolve();

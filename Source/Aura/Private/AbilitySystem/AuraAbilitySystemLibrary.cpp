@@ -21,7 +21,7 @@ void UAuraAbilitySystemLibrary::GiveGrantedAttributes(const UObject* WorldContex
 	check(ASC);
 	check(CharacterData);
 
-	if (const UAuraAbilitySetData* AbilitySet = Cast<UAuraAbilitySetData>(CharacterData->CharacterAbilitySet))
+	if (const UAuraAbilitySetData* AbilitySet = Cast<UAuraAbilitySetData>(CharacterData->AbilityInfo.AbilitySetData))
 	{
 		for (const FAuraAbilitySetData_GameplayEffect& GameplayEffects : AbilitySet->GrantedGameplayEffects)
 		{
@@ -41,7 +41,7 @@ void UAuraAbilitySystemLibrary::GiveGrantedAbilities(const UObject* WorldContext
 	check(ASC);
 	check(CharacterData);
 
-	if (const UAuraAbilitySetData* AbilitySet = Cast<UAuraAbilitySetData>(CharacterData->CharacterAbilitySet))
+	if (const UAuraAbilitySetData* AbilitySet = Cast<UAuraAbilitySetData>(CharacterData->AbilityInfo.AbilitySetData))
 	{
 		for (const FAuraAbilitySetData_GameplayAbility& GameplayAbilities : AbilitySet->GrantedGameplayAbilities)
 		{
@@ -68,9 +68,9 @@ void UAuraAbilitySystemLibrary::GiveGrantedCommonAbilities(const UObject* WorldC
 	check(ASC);
 	check(CharacterData);
 
-	if (const UAuraAbilitySetData* AbilitySet = Cast<UAuraAbilitySetData>(CharacterData->CharacterAbilitySet))
+	if (const UAuraAbilitySetData* AbilitySet = Cast<UAuraAbilitySetData>(CharacterData->AbilityInfo.AbilitySetData))
 	{
-		for (const FAuraCommonAbilitiesInfo AbilitiesInfo : AbilitySet->GrantedCommonAbilitiesData->CommonAbilitiesInfos)
+		for (const FAuraCommonAbilitiesInfo AbilitiesInfo : AbilitySet->GrantedCommonAbilities->CommonAbilitiesInfo)
 		{
 			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilitiesInfo.Ability, AbilitiesInfo.AbilityLevel);
 			AbilitySpec.DynamicAbilityTags.AddTag(AbilitiesInfo.AbilityTag);
@@ -130,7 +130,7 @@ EAuraCharacterClass UAuraAbilitySystemLibrary::AuraGetCharacterClass(const UObje
 {
 	check(CharacterData);
 
-	return CharacterData->CharacterInfos.CharacterClass;
+	return CharacterData->CharacterInfo.CharacterClass;
 }
 
 bool UAuraAbilitySystemLibrary::IsBlockedHit(const FGameplayEffectContextHandle& EffectContextHandle)

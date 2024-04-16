@@ -158,13 +158,13 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().ArmorPenetrationDef, EvaluationParameters, SourceArmorPenetration);
 	SourceArmorPenetration = FMath::Max<float>(SourceArmorPenetration, 0.f);
 
-	const FRealCurve* SourceArmorPenetrationCurve = SourceCharacterData->DamageCalculationCoefficients->FindCurve(FName("ArmorPenetration"), FString());
+	const FRealCurve* SourceArmorPenetrationCurve = SourceCharacterData->AbilityInfo.DamageCalculationCoefficients->FindCurve(FName("ArmorPenetration"), FString());
 	const float SourceArmorPenetrationCoefficient = SourceArmorPenetrationCurve->Eval(SourceCharacterLevel);
 
 	// Armor Penetration ignores a percentage of the Target's Armor.
 	const float EffectiveArmor = TargetArmor *= (100 - SourceArmorPenetration * SourceArmorPenetrationCoefficient) / 100.f;
 
-	const FRealCurve* TargetEffectiveArmorCurve = TargetCharacterData->DamageCalculationCoefficients->FindCurve(FName("EffectiveArmor"), FString());
+	const FRealCurve* TargetEffectiveArmorCurve = TargetCharacterData->AbilityInfo.DamageCalculationCoefficients->FindCurve(FName("EffectiveArmor"), FString());
 	const float TargetEffectiveArmorCoefficient = TargetEffectiveArmorCurve->Eval(TargetCharacterLevel);
 	
 	// Armor ignores a percentage of Incoming Damage.
@@ -185,7 +185,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().CriticalHitDamageDef, EvaluationParameters, SourceCriticalHitDamage);
 	SourceCriticalHitDamage = FMath::Max<float>(SourceCriticalHitDamage, 0.f);
 
-	const FRealCurve* CriticalHitResistanceCurve = TargetCharacterData->DamageCalculationCoefficients->FindCurve(FName("CriticalHitResistance"), FString());
+	const FRealCurve* CriticalHitResistanceCurve = TargetCharacterData->AbilityInfo.DamageCalculationCoefficients->FindCurve(FName("CriticalHitResistance"), FString());
 	const float CriticalHitResistanceCoefficient = CriticalHitResistanceCurve->Eval(TargetCharacterLevel);
 
 	// Critical Hit Resistance reduces Critical Hit Chance by a certain percentage.
