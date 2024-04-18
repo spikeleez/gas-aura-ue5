@@ -103,7 +103,7 @@ void AAuraCharacterBase::BindCallbackHealthBarDelegates()
 	}
 }
 
-FVector AAuraCharacterBase::GetCombatSocketLocation()
+FVector AAuraCharacterBase::GetCombatSocketLocation_Implementation()
 {
 	check(Weapon);
 	check(CharacterData);

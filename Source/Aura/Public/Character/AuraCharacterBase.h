@@ -62,7 +62,7 @@ protected:
 	virtual void BindCallbackHealthBarDelegates();
 
 	UFUNCTION(BlueprintCallable, Category="Combat")
-	virtual FVector GetCombatSocketLocation() override;
+	virtual FVector GetCombatSocketLocation_Implementation() override;
 
 	void Dissolve();
 
