@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameplayTagContainer.h"
 #include "Engine/DataAsset.h"
+#include "Interaction/CombatInterface.h"
 #include "AuraCharacterData.generated.h"
 
 class UAuraAbilitySetData;
@@ -88,7 +88,7 @@ struct FAuraAnimationInfo
 	UAnimMontage* HitReactMontage = nullptr;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TMap<FGameplayTag, UAnimMontage*> AttackMontages;
+	TArray<FTaggedMontage> AttackMontages;
 };
 
 USTRUCT(BlueprintType)

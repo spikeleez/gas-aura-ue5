@@ -50,10 +50,11 @@ public:
 	virtual void MulticastHandleDeath();
 	
 	/* Combat Interface */
-	virtual FVector GetCombatSocketLocation_Implementation() override;
+	virtual FVector GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag) override;
 	virtual bool IsDead_Implementation() const override;
 	virtual AActor* GetAvatar_Implementation() override;
 	virtual void Die() override;
+	virtual TArray<FTaggedMontage> GetAttackMontagesInfo_Implementation() override;
 	/* End Combat Interface */
 	
 	UPROPERTY(BlueprintAssignable)

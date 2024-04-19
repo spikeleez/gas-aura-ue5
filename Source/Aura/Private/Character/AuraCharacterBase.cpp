@@ -127,7 +127,7 @@ void AAuraCharacterBase::MulticastHandleDeath_Implementation()
 	bIsDead = true;
 }
 
-FVector AAuraCharacterBase::GetCombatSocketLocation_Implementation()
+FVector AAuraCharacterBase::GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag)
 {
 	check(Weapon);
 	check(CharacterData);
@@ -204,6 +204,11 @@ void AAuraCharacterBase::Die()
 {
 	Weapon->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));
 	MulticastHandleDeath();
+}
+
+TArray<FTaggedMontage> AAuraCharacterBase::GetAttackMontagesInfo_Implementation()
+{
+	return GetCharacterData()->AnimationInfo.AttackMontages;
 }
 
 void AAuraCharacterBase::InitializeDefaultAttributes() const
