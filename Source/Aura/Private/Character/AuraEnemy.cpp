@@ -48,7 +48,10 @@ void AAuraEnemy::PossessedBy(AController* NewController)
 void AAuraEnemy::OnHitReactAbilityActivated(const FGameplayTag CallbackTag, int32 NewCount)
 {
 	Super::OnHitReactAbilityActivated(CallbackTag, NewCount);
-	AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"), bHitReacting);
+	if (AuraAIController && AuraAIController->GetBlackboardComponent())
+	{
+		AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"), bHitReacting);
+	}
 }
 
 void AAuraEnemy::HighlightActor()
