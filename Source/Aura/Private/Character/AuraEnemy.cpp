@@ -45,6 +45,12 @@ void AAuraEnemy::PossessedBy(AController* NewController)
 	AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("RangedAttacker"), GetCharacterClass() != EAuraCharacterClass::Warrior);
 }
 
+void AAuraEnemy::OnHitReactAbilityActivated(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	Super::OnHitReactAbilityActivated(CallbackTag, NewCount);
+	AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"), bHitReacting);
+}
+
 void AAuraEnemy::HighlightActor()
 {
 	bHighlighted = true;
@@ -84,16 +90,6 @@ void AAuraEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
-
 	// Initialize Ability Actor Info - Full Function for the Enemies.
 	InitAbilityActorInfo();
-
-	AbilitySystemComponent->RegisterGameplayTagEvent(FAuraGameplayTags::Get().Status_Effect_HitReact,
-		EGameplayTagEventType::NewOrRemoved).AddLambda([this](FGameplayTag CallbackTag, int32 NewCount)
-		{
-			bHitReacting = NewCount > 0;
-			GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : BaseWalkSpeed;
-			AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"), bHitReacting);
-		});
 }

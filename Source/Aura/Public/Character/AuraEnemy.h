@@ -21,6 +21,7 @@ class AURA_API AAuraEnemy : public AAuraCharacterBase, public IEnemyInterface
 public:
 	AAuraEnemy();
 	virtual void PossessedBy(AController* NewController) override;
+	virtual void OnHitReactAbilityActivated(const FGameplayTag CallbackTag, int32 NewCount) override;
 
 	/* Enemy Interface */
 	virtual void HighlightActor() override;
@@ -37,15 +38,8 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	bool bHighlighted = false;
 
-	UPROPERTY(BlueprintReadOnly, Category="Combat")
-	bool bHitReacting = false;
-
 	UPROPERTY(BlueprintReadWrite, Category="Combat")
 	TObjectPtr<AActor> CombatTarget;
-
-	UPROPERTY(BlueprintReadOnly, Category="Character Class Defaults")
-	float BaseWalkSpeed = 250.f;
-
 	
 protected:
 	virtual void BeginPlay() override;

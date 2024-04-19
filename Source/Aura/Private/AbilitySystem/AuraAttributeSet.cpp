@@ -217,6 +217,8 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	FAuraEffectProperties Props;
 	SetEffectProperties(Data, Props);
 
+	FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
+
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
 		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
@@ -247,7 +249,7 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			}
 			else
 			{
-				ApplyHitReactTagToTarget(Props, FAuraGameplayTags::Get().Abilities_Action_HitReact);
+				ActivateHitReactAbilityInTarget(Props, GameplayTags.Abilities_Action_HitReact);
 			}
 			
 			const bool bBlock = UAuraAbilitySystemLibrary::IsBlockedHit(Props.EffectContextHandle);
@@ -290,7 +292,7 @@ void UAuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData
 	}
 }
 
-void UAuraAttributeSet::ApplyHitReactTagToTarget(const FAuraEffectProperties& Props, FGameplayTag HitReactTag) const
+void UAuraAttributeSet::ActivateHitReactAbilityInTarget(const FAuraEffectProperties& Props, FGameplayTag HitReactTag) const
 {
 	check(Props.TargetASC);
 
@@ -302,9 +304,6 @@ void UAuraAttributeSet::ApplyHitReactTagToTarget(const FAuraEffectProperties& Pr
 			{
 				if (AbilityInfo.AbilityTag.MatchesTagExact(HitReactTag))
 				{
-					//FGameplayTagContainer TagContainer;
-					//TagContainer.AddTag(HitReactTag);
-					//Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
 					Props.TargetASC->TryActivateAbilityByClass(AbilityInfo.Ability);
 				}
 			}
@@ -317,6 +316,11 @@ void UAuraAttributeSet::ShowFloatingDamageText(const FAuraEffectProperties& Prop
 	if (Props.SourceCharacter != Props.TargetCharacter)
 	{
 		if (AAuraPlayerController* PC = Cast<AAuraPlayerController>(Props.SourceCharacter->Controller))
+		{
+			PC->ShowDamageNumber(Damage, Props.TargetCharacter, bBlockedHit, bCriticalHit);
+			return;
+		}
+		if (AAuraPlayerController* PC = Cast<AAuraPlayerController>(Props.TargetCharacter->Controller))
 		{
 			PC->ShowDamageNumber(Damage, Props.TargetCharacter, bBlockedHit, bCriticalHit);
 		}

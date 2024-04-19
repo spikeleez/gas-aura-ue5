@@ -31,4 +31,10 @@ public:
 	void UpdateFacingTargetLocation(const FVector& Location);
 
 	virtual void Die() = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="Combat")
+	bool IsDead() const;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="Combat")
+	AActor* GetAvatar();
 };

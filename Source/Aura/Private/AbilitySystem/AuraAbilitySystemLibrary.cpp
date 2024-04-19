@@ -27,8 +27,7 @@ void UAuraAbilitySystemLibrary::GiveGrantedAttributes(const UObject* WorldContex
 		{
 			FGameplayEffectContextHandle EffectContextHandle = ASC->MakeEffectContext();
 			EffectContextHandle.AddSourceObject(AvatarActor);
-			const FGameplayEffectSpecHandle EffectSpecHandle = ASC->MakeOutgoingSpec(
-				GameplayEffects.GameplayEffect, GameplayEffects.EffectLevel, EffectContextHandle);
+			const FGameplayEffectSpecHandle EffectSpecHandle = ASC->MakeOutgoingSpec(GameplayEffects.GameplayEffect, GameplayEffects.EffectLevel, EffectContextHandle);
 
 			ASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
 		}
@@ -47,7 +46,7 @@ void UAuraAbilitySystemLibrary::GiveGrantedAbilities(const UObject* WorldContext
 		{
 			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(GameplayAbilities.GameplayAbility, GameplayAbilities.AbilityLevel);
 			AbilitySpec.DynamicAbilityTags.AddTag(GameplayAbilities.AbilityTag);
-			
+
 			//Add Gameplay Ability Tag to Ability Tags -- Use this code bellow!
 			/*
 			if (!GameplayAbilities.AbilityTag.MatchesTag(FAuraGameplayTags::Get().Input))
@@ -55,15 +54,15 @@ void UAuraAbilitySystemLibrary::GiveGrantedAbilities(const UObject* WorldContext
 				AbilitySpec.Ability->AbilityTags.AddTag(GameplayAbilities.AbilityTag);
 			}
 			*/
-			
+
 			ASC->GiveAbility(AbilitySpec);
 		}
 		// TODO: Tag RelationShip Logic Here!
 	}
 }
 
-void UAuraAbilitySystemLibrary::GiveGrantedCommonAbilities(const UObject* WorldContext,
-	const UAuraCharacterData* CharacterData, UAbilitySystemComponent* ASC)
+void UAuraAbilitySystemLibrary::GiveGrantedCommonAbilities(const UObject* WorldContext, const UAuraCharacterData* CharacterData,
+	UAbilitySystemComponent* ASC)
 {
 	check(ASC);
 	check(CharacterData);
@@ -72,6 +71,7 @@ void UAuraAbilitySystemLibrary::GiveGrantedCommonAbilities(const UObject* WorldC
 	{
 		for (const FAuraCommonAbilitiesInfo AbilitiesInfo : AbilitySet->GrantedCommonAbilities->CommonAbilitiesInfo)
 		{
+			// TODO: Change Ability Spec Level Based (Level of Character has this ability).
 			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilitiesInfo.Ability, AbilitiesInfo.AbilityLevel);
 			AbilitySpec.DynamicAbilityTags.AddTag(AbilitiesInfo.AbilityTag);
 			ASC->GiveAbility(AbilitySpec);
@@ -125,11 +125,9 @@ UAuraCharacterData* UAuraAbilitySystemLibrary::AuraGetCharacterData(const UObjec
 	return nullptr;
 }
 
-EAuraCharacterClass UAuraAbilitySystemLibrary::AuraGetCharacterClass(const UObject* WorldContext,
-	UAuraCharacterData* CharacterData)
+EAuraCharacterClass UAuraAbilitySystemLibrary::AuraGetCharacterClass(const UObject* WorldContext, UAuraCharacterData* CharacterData)
 {
 	check(CharacterData);
-
 	return CharacterData->CharacterInfo.CharacterClass;
 }
 
@@ -162,8 +160,36 @@ void UAuraAbilitySystemLibrary::SetIsBlockedHit(FGameplayEffectContextHandle& Ef
 void UAuraAbilitySystemLibrary::SetIsCriticalHit(FGameplayEffectContextHandle& EffectContextHandle,
 	bool bIsCritical)
 {
-	if (FAuraGameplayEffectContext* AuraEffectContext = static_cast<FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
+	if (FAuraGameplayEffectContext* AuraEffectContext = static_cast<FAuraGameplayEffectContext*>(EffectContextHandle.
+		Get()))
 	{
 		AuraEffectContext->SetIsCriticalHit(bIsCritical);
+	}
+}
+
+void UAuraAbilitySystemLibrary::GetLivePlayersWithinRadius(const UObject* WorldContext, TArray<AActor*>& OutOverlappingActors,
+		const TArray<AActor*>& ActorsToIgnore, float Radius, const FVector& SphereOrigin)
+{
+	FCollisionQueryParams SphereParams;
+	SphereParams.AddIgnoredActors(ActorsToIgnore);
+
+	if (const UWorld* World = GEngine->GetWorldFromContextObject(WorldContext, EGetWorldErrorMode::LogAndReturnNull))
+	{
+		TArray<FOverlapResult> Overlaps;
+		World->OverlapMultiByObjectType(
+			Overlaps,
+			SphereOrigin,
+			FQuat::Identity,
+			FCollisionObjectQueryParams(FCollisionObjectQueryParams::InitType::AllDynamicObjects),
+			FCollisionShape::MakeSphere(Radius),
+			SphereParams
+		);
+		for (FOverlapResult& OverlapResult : Overlaps)
+		{
+			if (OverlapResult.GetActor()->Implements<UCombatInterface>() && !ICombatInterface::Execute_IsDead(OverlapResult.GetActor()))
+			{
+				OutOverlappingActors.AddUnique(ICombatInterface::Execute_GetAvatar(OverlapResult.GetActor()));
+			}
+		}
 	}
 }

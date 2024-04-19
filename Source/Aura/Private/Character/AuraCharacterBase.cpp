@@ -12,6 +12,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Data/AuraCharacterData.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "UI/Widget/AuraUserWidget.h"
 
 AAuraCharacterBase::AAuraCharacterBase()
@@ -50,6 +51,11 @@ void AAuraCharacterBase::BeginPlay()
 
 	// Bind Callback Health Delegates (Progress Bar).
 	BindCallbackHealthBarDelegates();
+
+	GetCharacterMovement()->MaxWalkSpeed = GetCharacterData()->CharacterInfo.CharacterBaseWalkSpeed;
+
+	AbilitySystemComponent->RegisterGameplayTagEvent(FAuraGameplayTags::Get().Status_Effect_HitReact,
+		EGameplayTagEventType::NewOrRemoved).AddUObject(this, &AAuraCharacterBase::OnHitReactAbilityActivated);
 }
 
 void AAuraCharacterBase::InitAbilityActorInfo()
@@ -103,11 +109,39 @@ void AAuraCharacterBase::BindCallbackHealthBarDelegates()
 	}
 }
 
+void AAuraCharacterBase::MulticastHandleDeath_Implementation()
+{
+	Weapon->SetSimulatePhysics(true);
+	Weapon->SetEnableGravity(true);
+	Weapon->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+
+	GetMesh()->SetSimulatePhysics(true);
+	GetMesh()->SetEnableGravity(true);
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+	GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+	
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	
+	Dissolve();
+
+	bIsDead = true;
+}
+
 FVector AAuraCharacterBase::GetCombatSocketLocation_Implementation()
 {
 	check(Weapon);
 	check(CharacterData);
 	return Weapon->GetSocketLocation(CharacterData->WeaponInfo.WeaponSocket);
+}
+
+bool AAuraCharacterBase::IsDead_Implementation() const
+{
+	return bIsDead;
+}
+
+AActor* AAuraCharacterBase::GetAvatar_Implementation()
+{
+	return this;
 }
 
 void AAuraCharacterBase::Dissolve()
@@ -160,26 +194,16 @@ EAuraCharacterClass AAuraCharacterBase::GetCharacterClass()
 	return UAuraAbilitySystemLibrary::AuraGetCharacterClass(this, GetCharacterData());
 }
 
+void AAuraCharacterBase::OnHitReactAbilityActivated(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	bHitReacting = NewCount > 0;
+	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : GetCharacterData()->CharacterInfo.CharacterBaseWalkSpeed;
+}
+
 void AAuraCharacterBase::Die()
 {
 	Weapon->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));
 	MulticastHandleDeath();
-}
-
-void AAuraCharacterBase::MulticastHandleDeath_Implementation()
-{
-	Weapon->SetSimulatePhysics(true);
-	Weapon->SetEnableGravity(true);
-	Weapon->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
-
-	GetMesh()->SetSimulatePhysics(true);
-	GetMesh()->SetEnableGravity(true);
-	GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
-	GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
-	
-	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	
-	Dissolve();
 }
 
 void AAuraCharacterBase::InitializeDefaultAttributes() const

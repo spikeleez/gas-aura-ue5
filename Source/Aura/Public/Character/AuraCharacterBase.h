@@ -44,25 +44,32 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Character Data")
 	EAuraCharacterClass GetCharacterClass();
 
-	virtual void Die() override;
+	virtual void OnHitReactAbilityActivated(const FGameplayTag CallbackTag, int32 NewCount);
 
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void MulticastHandleDeath();
-
+	
+	/* Combat Interface */
+	virtual FVector GetCombatSocketLocation_Implementation() override;
+	virtual bool IsDead_Implementation() const override;
+	virtual AActor* GetAvatar_Implementation() override;
+	virtual void Die() override;
+	/* End Combat Interface */
+	
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeChangedSignature OnHealthChanged;
 
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeChangedSignature OnMaxHealthChanged;
+
+	UPROPERTY(BlueprintReadOnly, Category="Combat")
+	bool bHitReacting = false;
 	
 protected:
 	virtual void OnConstruction(const FTransform& Transform) override;
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo();
 	virtual void BindCallbackHealthBarDelegates();
-
-	UFUNCTION(BlueprintCallable, Category="Combat")
-	virtual FVector GetCombatSocketLocation_Implementation() override;
 
 	void Dissolve();
 
@@ -71,6 +78,8 @@ protected:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void StartWeaponDissolveTimeline(UMaterialInstanceDynamic* DynamicMaterialInstance);
+
+	bool bIsDead = false;
 
 	UPROPERTY(EditAnywhere, Category="Combat")
 	TObjectPtr<USkeletalMeshComponent> Weapon;

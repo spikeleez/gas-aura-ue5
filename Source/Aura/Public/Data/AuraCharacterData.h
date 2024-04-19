@@ -47,6 +47,9 @@ struct FAuraCharacterInfo
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	float CharacterLifeSpan = 5.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	float CharacterBaseWalkSpeed = 250.f;
 };
 
 USTRUCT(BlueprintType)
