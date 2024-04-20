@@ -28,11 +28,16 @@ void UAuraDamageGameplayAbility::CauseDamage(AActor* TargetActor)
 
 FTaggedMontage UAuraDamageGameplayAbility::ProcessAttackMontageInfos()
 {
-	TArray<FTaggedMontage> AttackMontages = ICombatInterface::Execute_GetAttackMontagesInfo(GetAvatarActorFromActorInfo());
-	int32 RandomIndex = FMath::RandRange(0, AttackMontages.Num()-1);
+	TArray<FTaggedMontage> TaggedMontages = ICombatInterface::Execute_GetAttackMontagesInfo(GetAvatarActorFromActorInfo());
+	int32 RandomIndex = FMath::RandRange(0, TaggedMontages.Num()-1);
 	
-	AttackMontage = AttackMontages[RandomIndex].AttackMontage;
-	AttackMontageTag = AttackMontages[RandomIndex].AttackMontageTag;
+	AttackMontage = TaggedMontages[RandomIndex].AttackMontage;
+	AttackMontageTag = TaggedMontages[RandomIndex].AttackMontageTag;
 	
-	return AttackMontages[RandomIndex];
+	return TaggedMontages[RandomIndex];
+}
+
+float UAuraDamageGameplayAbility::GetAttackSocketRadius() const
+{
+	return AttackTaggedInfo.AttackSocketRadius;
 }

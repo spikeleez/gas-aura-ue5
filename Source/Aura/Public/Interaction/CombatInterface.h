@@ -20,6 +20,9 @@ struct FTaggedMontage
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FName AttackSocketLocation = FName("TipSocket");
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	float AttackSocketRadius = 45.f;
 };
 
 // This class does not need to be modified.
