@@ -32,16 +32,16 @@ public:
 	static void GiveGrantedCommonAbilities(const UObject* WorldContext, const UAuraCharacterData* CharacterData,
 		UAbilitySystemComponent* ASC);
 
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category="AuraAbilitySystemLibrary|WidgetController")
+	UFUNCTION(BlueprintPure, Category="AuraAbilitySystemLibrary|WidgetController")
 	static UOverlayWidgetController* GetOverlayWidgetController(const UObject* WorldContext = nullptr);
 
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category="AuraAbilitySystemLibrary|WidgetController")
+	UFUNCTION(BlueprintPure, Category="AuraAbilitySystemLibrary|WidgetController")
 	static UAttributeMenuWidgetController* GetAttributeMenuWidgetController(const UObject* WorldContext = nullptr);
 
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category="AuraAbilitySystemLibrary|CharacterData")
+	UFUNCTION(BlueprintPure, Category="AuraAbilitySystemLibrary|CharacterData")
 	static UAuraCharacterData* AuraGetCharacterData(const UObject* WorldContext, AActor* Actor);
 
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category="AuraAbilitySystemLibrary|CharacterData")
+	UFUNCTION(BlueprintPure, Category="AuraAbilitySystemLibrary|CharacterData")
 	static EAuraCharacterClass AuraGetCharacterClass(const UObject* WorldContext, UAuraCharacterData* CharacterData);
 
 	UFUNCTION(BlueprintPure, Category="AuraAbilitySystemLibrary|GameplayEffect")
@@ -59,4 +59,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category="AuraAbilitySystemLibrary|GameplayMechanics")
 	static void GetLivePlayersWithinRadius(const UObject* WorldContext, TArray<AActor*>& OutOverlappingActors,
 		const TArray<AActor*>& ActorsToIgnore, float Radius, const FVector& SphereOrigin);
+
+	UFUNCTION(BlueprintPure, Category="AuraAbilitySystemLibrary|GameplayMechanics")
+	static bool IsNotFriend(AActor* FirstActor, AActor* SecondActor);
 };
