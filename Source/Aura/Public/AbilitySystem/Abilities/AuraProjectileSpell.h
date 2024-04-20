@@ -25,4 +25,8 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Projectile")
 	TSubclassOf<AAuraProjectile> ProjectileClass;
+
+private:
+	UPROPERTY()
+	FVector SpawnProjectileSocketLocation;
 };

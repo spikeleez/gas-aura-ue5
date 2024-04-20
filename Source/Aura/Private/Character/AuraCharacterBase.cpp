@@ -129,9 +129,15 @@ void AAuraCharacterBase::MulticastHandleDeath_Implementation()
 
 FVector AAuraCharacterBase::GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag)
 {
-	check(Weapon);
-	check(CharacterData);
-	return Weapon->GetSocketLocation(CharacterData->WeaponInfo.WeaponSocket);
+	const FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
+	for (const FTaggedMontage& AttackInfo : GetCharacterData()->AnimationInfo.AttackMontages)
+	{
+		if (MontageTag.MatchesTagExact(AttackInfo.AttackMontageTag))
+		{
+			return Weapon->GetSocketLocation(AttackInfo.AttackSocketLocation);
+		}
+	}
+	return FVector();
 }
 
 bool AAuraCharacterBase::IsDead_Implementation() const

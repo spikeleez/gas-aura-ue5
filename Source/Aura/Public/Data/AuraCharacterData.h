@@ -56,10 +56,7 @@ USTRUCT(BlueprintType)
 struct FAuraWeaponInfo
 {
 	GENERATED_BODY()
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FName WeaponSocket = "TipSocket";
-
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FName WeaponName = "Weapon Name";
 

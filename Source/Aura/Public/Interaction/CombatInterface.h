@@ -17,6 +17,9 @@ struct FTaggedMontage
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FGameplayTag AttackMontageTag = FGameplayTag();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FName AttackSocketLocation = FName("TipSocket");
 };
 
 // This class does not need to be modified.

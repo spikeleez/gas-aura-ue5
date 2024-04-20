@@ -43,8 +43,8 @@ public:
 	
 protected:
 	virtual void BeginPlay() override;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character Class Defaults")
+ 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character Defaults")
 	int32 Level = 1;
 
 	UPROPERTY(EditAnywhere, Category="AI")
