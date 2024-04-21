@@ -10,7 +10,7 @@ void UAuraDamageGameplayAbility::ActivateAbility(const FGameplayAbilitySpecHandl
 	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
 	const FGameplayEventData* TriggerEventData)
 {
-	AttackTaggedInfo = ProcessAttackMontageInfos();
+	if (AttackMontage && AttackMontageTag.IsValid()) AttackTaggedInfo = ProcessAttackMontageInfos();
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }
 
@@ -33,7 +33,6 @@ FTaggedMontage UAuraDamageGameplayAbility::ProcessAttackMontageInfos()
 	
 	AttackMontage = TaggedMontages[RandomIndex].AttackMontage;
 	AttackMontageTag = TaggedMontages[RandomIndex].AttackMontageTag;
-	
 	return TaggedMontages[RandomIndex];
 }
 
