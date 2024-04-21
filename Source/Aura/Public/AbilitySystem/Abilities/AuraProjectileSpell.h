@@ -28,5 +28,5 @@ protected:
 
 private:
 	UPROPERTY()
-	FVector SpawnProjectileSocketLocation;
+	FVector SpawnSocketLocation;
 };

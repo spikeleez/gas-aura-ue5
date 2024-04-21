@@ -25,13 +25,13 @@ void UAuraProjectileSpell::SpawnProjectileSpell(const FVector& ProjectileTargetL
 	AAuraCharacterBase* CharacterBase = Cast<AAuraCharacterBase>(GetAvatarActorFromActorInfo());
 	for (const FTaggedMontage& AttackMontages : CharacterBase->GetCharacterData()->AnimationInfo.AttackMontages)
 	{
-		SpawnProjectileSocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(
+		SpawnSocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(
 			GetAvatarActorFromActorInfo(), AttackMontages.AttackMontageTag);
 	}
-	FRotator Rotation = (ProjectileTargetLocation - SpawnProjectileSocketLocation).Rotation();
+	FRotator Rotation = (ProjectileTargetLocation - SpawnSocketLocation).Rotation();
 	
 	FTransform SpawnTransform;
-	SpawnTransform.SetLocation(SpawnProjectileSocketLocation);
+	SpawnTransform.SetLocation(SpawnSocketLocation);
 	SpawnTransform.SetRotation(Rotation.Quaternion());
 
 	AAuraProjectile* Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>(
@@ -64,7 +64,6 @@ void UAuraProjectileSpell::SpawnProjectileSpell(const FVector& ProjectileTargetL
 		const float ScaledDamage = Pair.Value.GetValueAtLevel(GetAbilityLevel());
 		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, Pair.Key, ScaledDamage);
 	}
-	
 	Projectile->DamageEffectSpecHandle = SpecHandle;
 	Projectile->FinishSpawning(SpawnTransform);
 }
