@@ -5,7 +5,6 @@
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
-#include "AbilitySystem/AuraAttributeSet.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -68,6 +67,11 @@ void AAuraCharacter::OnRep_PlayerState()
 
 	// Init Ability Actor Info for the Client.
 	InitAbilityActorInfo();
+}
+
+void AAuraCharacter::OnHitReactAbilityActivated(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	// TODO: Improve new Hit React from Player.
 }
 
 int32 AAuraCharacter::GetCharacterLevel()

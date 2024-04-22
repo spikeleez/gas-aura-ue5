@@ -20,6 +20,7 @@ public:
 	AAuraCharacter();
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void OnRep_PlayerState() override;
+	virtual void OnHitReactAbilityActivated(const FGameplayTag CallbackTag, int32 NewCount) override;
 
 	UPROPERTY(EditAnywhere, Category="Player|Camera")
 	TObjectPtr<USpringArmComponent> SpringArm;
