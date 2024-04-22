@@ -12,7 +12,6 @@
 #include "Net/UnrealNetwork.h"
 #include "Data/AuraCharacterData.h"
 #include "Interaction/CombatInterface.h"
-#include "Kismet/GameplayStatics.h"
 #include "Player/AuraPlayerController.h"
 
 #pragma region Boiler Plate Attributes
@@ -302,9 +301,9 @@ void UAuraAttributeSet::ActivateHitReactAbilityInTarget(const FAuraEffectPropert
 		{
 			for (const FAuraCommonAbilitiesInfo& AbilityInfo : CommonAbilities->CommonAbilitiesInfo)
 			{
-				if (AbilityInfo.AbilityTag.MatchesTagExact(HitReactTag))
+				for (const FGameplayTag& Tags : AbilityInfo.AbilityTags)
 				{
-					Props.TargetASC->TryActivateAbilityByClass(AbilityInfo.Ability);
+					if (Tags.MatchesTagExact(HitReactTag)) Props.TargetASC->TryActivateAbilityByClass(AbilityInfo.GameplayAbility);
 				}
 			}
 		}

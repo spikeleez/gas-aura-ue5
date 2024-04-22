@@ -134,7 +134,17 @@ FVector AAuraCharacterBase::GetCombatSocketLocation_Implementation(const FGamepl
 	{
 		if (MontageTag.MatchesTagExact(AttackInfo.AttackMontageTag))
 		{
-			return Weapon->GetSocketLocation(AttackInfo.AttackSocketLocation);
+			if (MontageTag.MatchesTag(GameplayTags.Montage_Attack_Melee_Weapon) ||
+			MontageTag.MatchesTag(GameplayTags.Montage_Attack_Ranged_Weapon))
+			{
+				return Weapon->GetSocketLocation(AttackInfo.AttackSocketName);
+			}
+
+			if (MontageTag.MatchesTag(GameplayTags.Montage_Attack_Melee_Unarmed) ||
+				MontageTag.MatchesTag(GameplayTags.Montage_Attack_Ranged_Unarmed))
+			{
+				return GetMesh()->GetSocketLocation(AttackInfo.AttackSocketName);
+			}
 		}
 	}
 	return FVector();

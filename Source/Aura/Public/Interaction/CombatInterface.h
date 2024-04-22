@@ -19,7 +19,7 @@ struct FTaggedMontage
 	FGameplayTag AttackMontageTag = FGameplayTag();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FName AttackSocketLocation = FName("TipSocket");
+	FName AttackSocketName = FName("TipSocket");
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	float AttackSocketRadius = 45.f;
@@ -46,7 +46,7 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="CombatInterface")
 	FVector GetCombatSocketLocation(const FGameplayTag& MontageTag);
 
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category="CombatInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="CombatInterface")
 	void UpdateFacingTargetLocation(const FVector& Location);
 
 	virtual void Die() = 0;

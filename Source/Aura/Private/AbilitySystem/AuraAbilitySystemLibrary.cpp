@@ -28,7 +28,6 @@ void UAuraAbilitySystemLibrary::GiveGrantedAttributes(const UObject* WorldContex
 			FGameplayEffectContextHandle EffectContextHandle = ASC->MakeEffectContext();
 			EffectContextHandle.AddSourceObject(AvatarActor);
 			const FGameplayEffectSpecHandle EffectSpecHandle = ASC->MakeOutgoingSpec(GameplayEffects.GameplayEffect, GameplayEffects.EffectLevel, EffectContextHandle);
-
 			ASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
 		}
 	}
@@ -45,18 +44,28 @@ void UAuraAbilitySystemLibrary::GiveGrantedAbilities(const UObject* WorldContext
 		for (const FAuraAbilitySetData_GameplayAbility& GameplayAbilities : AbilitySet->GrantedGameplayAbilities)
 		{
 			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(GameplayAbilities.GameplayAbility, GameplayAbilities.AbilityLevel);
-			AbilitySpec.DynamicAbilityTags.AddTag(GameplayAbilities.AbilityTag);
-
-			// TODO: Add Gameplay Ability Tag to Ability Tags -- Use this code bellow!
-			
-			/*if (!GameplayAbilities.AbilityTag.MatchesTag(FAuraGameplayTags::Get().Input))
+			if (GameplayAbilities.AbilityActivationMethod == EAbilityActivationMethod::Both)
 			{
-				AbilitySpec.Ability->AbilityTags.AddTag(GameplayAbilities.AbilityTag);
-			}*/
-			
+				AbilitySpec.DynamicAbilityTags.AddTag(GameplayAbilities.AbilityInputTag);
+				for (const FGameplayTag& Tags : GameplayAbilities.AbilityTags)
+				{
+					if (!Tags.MatchesTag(FAuraGameplayTags::Get().Input)) AbilitySpec.Ability->AbilityTags.AddTag(Tags);
+				}
+			}
+			if (GameplayAbilities.AbilityActivationMethod == EAbilityActivationMethod::BasedOnAbilityTags)
+			{
+				for (const FGameplayTag& Tags : GameplayAbilities.AbilityTags)
+				{
+					if (!Tags.MatchesTag(FAuraGameplayTags::Get().Input)) AbilitySpec.Ability->AbilityTags.AddTag(Tags);
+				}
+			}
+			if (GameplayAbilities.AbilityActivationMethod == EAbilityActivationMethod::BasedOnAbilityInputTag)
+			{
+				AbilitySpec.DynamicAbilityTags.AddTag(GameplayAbilities.AbilityInputTag);
+			}
 			ASC->GiveAbility(AbilitySpec);
 		}
-		// TODO: Tag RelationShip Logic Here!
+		//TODO: Tag RelationShip Logic Here!
 	}
 }
 
@@ -68,11 +77,14 @@ void UAuraAbilitySystemLibrary::GiveGrantedCommonAbilities(const UObject* WorldC
 
 	if (const UAuraAbilitySetData* AbilitySet = Cast<UAuraAbilitySetData>(CharacterData->AbilityInfo.AbilitySetData))
 	{
-		for (const FAuraCommonAbilitiesInfo AbilitiesInfo : AbilitySet->GrantedCommonAbilities->CommonAbilitiesInfo)
+		for (const FAuraCommonAbilitiesInfo Ability : AbilitySet->GrantedCommonAbilities->CommonAbilitiesInfo)
 		{
 			// TODO: Change Ability Spec Level Based (Level of Character has this ability).
-			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilitiesInfo.Ability, AbilitiesInfo.AbilityLevel);
-			AbilitySpec.DynamicAbilityTags.AddTag(AbilitiesInfo.AbilityTag);
+			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Ability.GameplayAbility, Ability.AbilityLevel);
+			for (const FGameplayTag& Tags : Ability.AbilityTags)
+			{
+				if (!Tags.MatchesTag(FAuraGameplayTags::Get().Input)) AbilitySpec.Ability->AbilityTags.AddTag(Tags);
+			}
 			ASC->GiveAbility(AbilitySpec);
 		}
 	}

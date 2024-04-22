@@ -15,13 +15,13 @@ struct FAuraCommonAbilitiesInfo
 	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TSubclassOf<UGameplayAbility> Ability = nullptr;
+	TSubclassOf<UGameplayAbility> GameplayAbility = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	int32 AbilityLevel = 1;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FGameplayTag AbilityTag = FGameplayTag();
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(ShortTooltip="Ability Tags that will be added to the 'Ability Tags' container for that Ability."))
+	FGameplayTagContainer AbilityTags = FGameplayTagContainer();
 };
 
 /**

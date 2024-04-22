@@ -86,19 +86,28 @@ struct FAuraGameplayTags
  /* Montage Tags */
  inline CREATE_NATIVE_TAG(Montage, "A Montage Tag");
  inline CREATE_NATIVE_TAG(Montage_Attack, "A Montage Attack Tag");
+ 
  inline CREATE_NATIVE_TAG(Montage_Attack_Melee, "For Melee Montage Attacks Tag");
- inline CREATE_NATIVE_TAG(Montage_Attack_Ranged, "For Ranged Montage Attacks Tag");
  inline CREATE_NATIVE_TAG(Montage_Attack_Melee_Weapon, "A Melee Weapon Attack Montage Tag");
  inline CREATE_NATIVE_TAG(Montage_Attack_Melee_Weapon_A, "A Melee Weapon A Attack Montage Tag");
  inline CREATE_NATIVE_TAG(Montage_Attack_Melee_Weapon_B, "A Melee Weapon B Attack Montage Tag");
  inline CREATE_NATIVE_TAG(Montage_Attack_Melee_Weapon_C, "A Melee Weapon C Attack Montage Tag");
+
  inline CREATE_NATIVE_TAG(Montage_Attack_Melee_Unarmed, "A Melee Unarmed Attack Montage Tag");
  inline CREATE_NATIVE_TAG(Montage_Attack_Melee_Unarmed_A, "A Melee Unarmed A Attack Montage Tag");
  inline CREATE_NATIVE_TAG(Montage_Attack_Melee_Unarmed_B, "A Melee Unarmed B Attack Montage Tag");
  inline CREATE_NATIVE_TAG(Montage_Attack_Melee_Unarmed_C, "A Melee Unarmed C Attack Montage Tag");
- inline CREATE_NATIVE_TAG(Montage_Attack_Ranged_A, "A Ranged A Attack Montage Tag");
- inline CREATE_NATIVE_TAG(Montage_Attack_Ranged_B, "A Ranged B Attack Montage Tag");
- inline CREATE_NATIVE_TAG(Montage_Attack_Ranged_C, "A Ranged C Attack Montage Tag");
+
+ inline CREATE_NATIVE_TAG(Montage_Attack_Ranged, "For Ranged Montage Attacks Tag");
+ inline CREATE_NATIVE_TAG(Montage_Attack_Ranged_Weapon, "A Ranged Weapon Attack Montage Tag");
+ inline CREATE_NATIVE_TAG(Montage_Attack_Ranged_Weapon_A, "A Ranged A Weapon Attack Montage Tag");
+ inline CREATE_NATIVE_TAG(Montage_Attack_Ranged_Weapon_B, "A Ranged B Weapon Attack Montage Tag");
+ inline CREATE_NATIVE_TAG(Montage_Attack_Ranged_Weapon_C, "A Ranged C Weapon Attack Montage Tag");
+
+ inline CREATE_NATIVE_TAG(Montage_Attack_Ranged_Unarmed, "A Ranged Unarmed Attack Montage Tag");
+ inline CREATE_NATIVE_TAG(Montage_Attack_Ranged_Unarmed_A, "A Ranged A Unarmed Attack Montage Tag");
+ inline CREATE_NATIVE_TAG(Montage_Attack_Ranged_Unarmed_B, "A Ranged B Unarmed Attack Montage Tag");
+ inline CREATE_NATIVE_TAG(Montage_Attack_Ranged_Unarmed_C, "A Ranged C Unarmed Attack Montage Tag");
 
 private:
  static FAuraGameplayTags GameplayTags;

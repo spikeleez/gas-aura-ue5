@@ -7,6 +7,14 @@
 #include "AuraCommonAbilitiesData.h"
 #include "AuraAbilitySetData.generated.h"
 
+UENUM(BlueprintType)
+enum class EAbilityActivationMethod : uint8
+{
+	BasedOnAbilityTags,
+	BasedOnAbilityInputTag,
+	Both
+};
+
 class UAttributeSet;
 class UGameplayAbility;
 class UGameplayEffect;
@@ -35,7 +43,19 @@ struct FAuraAbilitySetData_GameplayAbility
 	int32 AbilityLevel = 1;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FGameplayTag AbilityTag = FGameplayTag();
+	EAbilityActivationMethod AbilityActivationMethod = EAbilityActivationMethod::BasedOnAbilityTags;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,
+		meta=(ShortToolTip="Input Tag for Activation this Ability.",
+		EditCondition="AbilityActivationMethod == EAbilityActivationMethod::BasedOnAbilityInputTag || AbilityActivationMethod == EAbilityActivationMethod::Both",
+		EditConditionHides))
+	FGameplayTag AbilityInputTag = FGameplayTag();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,
+		meta=(ShortToolTip="Ability Tags that will be added to the 'Ability Tags' container for that Ability.",
+		EditCondition="AbilityActivationMethod == EAbilityActivationMethod::BasedOnAbilityTags || AbilityActivationMethod == EAbilityActivationMethod::Both",
+		EditConditionHides))
+	FGameplayTagContainer AbilityTags = FGameplayTagContainer();
 };
 /**
  * 
@@ -50,8 +70,8 @@ public:
 	TArray<FAuraAbilitySetData_GameplayEffect> GrantedGameplayEffects;
 
 	UPROPERTY(EditDefaultsOnly, Category="GameplayAbilities", meta=(TitleProperty=GameplayAbility))
-	TObjectPtr<UAuraCommonAbilitiesData> GrantedCommonAbilities;
-	
-	UPROPERTY(EditDefaultsOnly, Category="GameplayAbilities", meta=(TitleProperty=GameplayAbility))
 	TArray<FAuraAbilitySetData_GameplayAbility> GrantedGameplayAbilities;
+
+	UPROPERTY(EditDefaultsOnly, Category="GameplayAbilities", meta=(TitleProperty=GameplayAbility))
+	TObjectPtr<UAuraCommonAbilitiesData> GrantedCommonAbilities;
 };

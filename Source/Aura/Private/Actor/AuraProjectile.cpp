@@ -7,6 +7,7 @@
 #include "AbilitySystemComponent.h"
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
+#include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "Aura/Aura.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
@@ -42,7 +43,6 @@ void AAuraProjectile::BeginPlay()
 	SetLifeSpan(ProjectileLifeSpan);
 	ProjectileAudioComponent = UGameplayStatics::SpawnSoundAttached(ProjectileSound, GetRootComponent(), NAME_None,
 		FVector(ForceInit), FRotator::ZeroRotator, EAttachLocation::SnapToTarget,true);
-	
 }
 
 void AAuraProjectile::Destroyed()
@@ -58,8 +58,16 @@ void AAuraProjectile::Destroyed()
 void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (DamageEffectSpecHandle.Data.IsValid() && DamageEffectSpecHandle.Data.Get()->GetContext().GetEffectCauser() == OtherActor) return;
-
+	if (DamageEffectSpecHandle.Data.IsValid() && DamageEffectSpecHandle.Data.Get()->GetContext().GetEffectCauser() == OtherActor)
+	{
+		return;
+	}
+	
+	if (!UAuraAbilitySystemLibrary::IsNotFriend(DamageEffectSpecHandle.Data.Get()->GetContext().GetEffectCauser(), OtherActor))
+	{
+		return;
+	}
+	
 	if (!bHit)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, ProjectileImpactSound, GetActorLocation(), FRotator::ZeroRotator);

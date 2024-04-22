@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AbilitySystem/Abilities/AuraDamageGameplayAbility.h"
-#include "AuraProjectileSpell.generated.h"
+#include "AuraAttackAbility.h"
+#include "AuraProjectileAbility.generated.h"
 
 class AAuraProjectile;
 
@@ -12,10 +12,13 @@ class AAuraProjectile;
  * 
  */
 UCLASS()
-class AURA_API UAuraProjectileSpell : public UAuraDamageGameplayAbility
+class AURA_API UAuraProjectileAbility : public UAuraAttackAbility
 {
 	GENERATED_BODY()
 
+public:
+	UAuraProjectileAbility(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+	
 protected:
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
 		const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
