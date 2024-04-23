@@ -188,6 +188,8 @@ void AAuraCharacterBase::SetupCharacter(UAuraCharacterData* Data) const
 	{
 		GetMesh()->SetSkeletalMeshAsset(Data->CharacterInfo.CharacterMesh);
 		GetMesh()->SetAnimInstanceClass(Data->AnimationInfo.CharacterAnimClass);
+
+		GetCharacterMovement()->RotationRate = FRotator(0.f, Data->CharacterInfo.CharacterRotationRate, 0.f);
 	}
 }
 
@@ -197,6 +199,7 @@ void AAuraCharacterBase::SetupWeapon(UAuraCharacterData* Data) const
 	{
 		Weapon->SetSkeletalMeshAsset(Data->WeaponInfo.WeaponMesh);
 		Weapon->SetAnimInstanceClass(Data->AnimationInfo.WeaponAnimClass);
+		Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, Data->WeaponInfo.WeaponHandSocket);
 	}
 }
 

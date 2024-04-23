@@ -39,7 +39,7 @@ AAuraCharacter::AAuraCharacter()
 
 	// Setup default character movement component properties.
 	GetCharacterMovement()->bOrientRotationToMovement = true;
-	GetCharacterMovement()->RotationRate = FRotator(0.f, MovementRotationRate, 0.f);
+	GetCharacterMovement()->bUseControllerDesiredRotation = true;
 	GetCharacterMovement()->bConstrainToPlane = true;
 	GetCharacterMovement()->bSnapToPlaneAtStart = true;
 

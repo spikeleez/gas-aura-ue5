@@ -34,8 +34,4 @@ public:
 
 protected:
 	virtual void InitAbilityActorInfo() override;
-
-private:
-	UPROPERTY(EditDefaultsOnly, Category="Movement")
-	float MovementRotationRate = 400.f;
 };
