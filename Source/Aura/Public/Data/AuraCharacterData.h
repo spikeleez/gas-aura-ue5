@@ -79,7 +79,10 @@ struct FAuraAnimationInfo
 	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TSubclassOf<UAnimInstance> AnimClass = nullptr;
+	TSubclassOf<UAnimInstance> CharacterAnimClass = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSubclassOf<UAnimInstance> WeaponAnimClass = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UAnimMontage* HitReactMontage = nullptr;
