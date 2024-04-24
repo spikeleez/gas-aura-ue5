@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
 #include "Data/AuraCharacterData.h"
+#include "Data/AuraMovementData.h"
 #include "Interaction/CombatInterface.h"
 #include "UI/WidgetController/OverlayWidgetController.h"
 #include "AuraCharacterBase.generated.h"
@@ -22,6 +23,7 @@ class AURA_API AAuraCharacterBase : public ACharacter, public IAbilitySystemInte
 
 public:
 	AAuraCharacterBase();
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return AbilitySystemComponent; };
 	virtual UAttributeSet* GetAttributeSet() const { return AttributeSet; }
@@ -33,16 +35,19 @@ public:
 	void InitializeDefaultAbilities() const;
 
 	UFUNCTION(BlueprintCallable, Category="Character Data|Character")
-	void SetupCharacter(UAuraCharacterData* Data) const;
+	void SetupCharacter(UAuraCharacterData* Data);
 
 	UFUNCTION(BlueprintCallable, Category="Character Data|Weapon")
-	void SetupWeapon(UAuraCharacterData* Data) const;
+	void SetupWeapon(UAuraCharacterData* Data);
 
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Character Data")
-	UAuraCharacterData* GetCharacterData();
+	UFUNCTION(BlueprintPure, Category="Character Data")
+	UAuraCharacterData* GetCharacterData() const;
 
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Character Data")
-	EAuraCharacterClass GetCharacterClass();
+	UFUNCTION(BlueprintPure, Category="Character Data")
+	UAuraMovementData* GetMovementData() const;
+
+	UFUNCTION(BlueprintPure, Category="Character Data")
+	EAuraCharacterClass GetCharacterClass() const;
 
 	virtual void OnHitReactAbilityActivated(const FGameplayTag CallbackTag, int32 NewCount);
 
@@ -55,6 +60,7 @@ public:
 	virtual AActor* GetAvatar_Implementation() override;
 	virtual void Die() override;
 	virtual TArray<FTaggedMontage> GetAttackMontagesInfo_Implementation() override;
+	virtual void UpdateCharacterMovementGait_Implementation(const EAuraMovementGait NewMovementGait) override;
 	/* End Combat Interface */
 	
 	UPROPERTY(BlueprintAssignable)
@@ -65,6 +71,9 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Category="Combat")
 	bool bHitReacting = false;
+
+	UPROPERTY(BlueprintReadOnly, Category="Movement", Replicated)
+	EAuraMovementGait CurrentMovementGait = EAuraMovementGait::Idle;
 	
 protected:
 	virtual void OnConstruction(const FTransform& Transform) override;

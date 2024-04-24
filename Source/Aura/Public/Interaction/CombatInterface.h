@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
 #include "GameplayTagContainer.h"
+#include "Data/AuraMovementData.h"
 #include "CombatInterface.generated.h"
 
 USTRUCT(BlueprintType)
@@ -48,6 +49,9 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="CombatInterface")
 	void UpdateFacingTargetLocation(const FVector& Location);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="CombatInterface|Movement")
+	void UpdateCharacterMovementGait(const EAuraMovementGait NewMovementGait);
 
 	virtual void Die() = 0;
 

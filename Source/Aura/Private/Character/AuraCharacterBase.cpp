@@ -12,7 +12,9 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Data/AuraCharacterData.h"
+#include "Data/AuraMovementData.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Net/UnrealNetwork.h"
 #include "UI/Widget/AuraUserWidget.h"
 
 AAuraCharacterBase::AAuraCharacterBase()
@@ -37,6 +39,13 @@ AAuraCharacterBase::AAuraCharacterBase()
 	HealthBar->SetGenerateOverlapEvents(false);
 }
 
+void AAuraCharacterBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AAuraCharacterBase, CurrentMovementGait);
+}
+
 void AAuraCharacterBase::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
@@ -52,7 +61,7 @@ void AAuraCharacterBase::BeginPlay()
 	// Bind Callback Health Delegates (Progress Bar).
 	BindCallbackHealthBarDelegates();
 
-	GetCharacterMovement()->MaxWalkSpeed = GetCharacterData()->CharacterInfo.CharacterBaseWalkSpeed;
+	GetCharacterMovement()->MaxWalkSpeed = GetMovementData()->FindMovementSpeedByGait(CurrentMovementGait);
 
 	AbilitySystemComponent->RegisterGameplayTagEvent(FAuraGameplayTags::Get().Status_Effect_HitReact,
 		EGameplayTagEventType::NewOrRemoved).AddUObject(this, &AAuraCharacterBase::OnHitReactAbilityActivated);
@@ -182,18 +191,20 @@ void AAuraCharacterBase::Dissolve()
 	}
 }
 
-void AAuraCharacterBase::SetupCharacter(UAuraCharacterData* Data) const
+void AAuraCharacterBase::SetupCharacter(UAuraCharacterData* Data)
 {
 	if (Data)
 	{
 		GetMesh()->SetSkeletalMeshAsset(Data->CharacterInfo.CharacterMesh);
 		GetMesh()->SetAnimInstanceClass(Data->AnimationInfo.CharacterAnimClass);
-
-		GetCharacterMovement()->RotationRate = FRotator(0.f, Data->CharacterInfo.CharacterRotationRate, 0.f);
+		if (GetMovementData())
+		{
+			GetCharacterMovement()->RotationRate = FRotator(0.f, GetMovementData()->MovementRotationRate, 0.f);
+		}
 	}
 }
 
-void AAuraCharacterBase::SetupWeapon(UAuraCharacterData* Data) const
+void AAuraCharacterBase::SetupWeapon(UAuraCharacterData* Data)
 {
 	if (Data)
 	{
@@ -203,13 +214,22 @@ void AAuraCharacterBase::SetupWeapon(UAuraCharacterData* Data) const
 	}
 }
 
-UAuraCharacterData* AAuraCharacterBase::GetCharacterData()
+UAuraCharacterData* AAuraCharacterBase::GetCharacterData() const
 {
 	if (CharacterData) return CharacterData;
 	return nullptr;
 }
 
-EAuraCharacterClass AAuraCharacterBase::GetCharacterClass()
+UAuraMovementData* AAuraCharacterBase::GetMovementData() const
+{
+	if (UAuraMovementData* MoveData = GetCharacterData()->CharacterInfo.CharacterMovementData)
+	{
+		return MoveData;
+	}
+	return nullptr;
+}
+
+EAuraCharacterClass AAuraCharacterBase::GetCharacterClass() const
 {
 	return UAuraAbilitySystemLibrary::AuraGetCharacterClass(this, GetCharacterData());
 }
@@ -217,7 +237,7 @@ EAuraCharacterClass AAuraCharacterBase::GetCharacterClass()
 void AAuraCharacterBase::OnHitReactAbilityActivated(const FGameplayTag CallbackTag, int32 NewCount)
 {
 	bHitReacting = NewCount > 0;
-	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : GetCharacterData()->CharacterInfo.CharacterBaseWalkSpeed;
+	bHitReacting ? GetCharacterMovement()->MaxWalkSpeed = 0.f : GetCharacterMovement()->MaxWalkSpeed = GetMovementData()->FindMovementSpeedByGait(CurrentMovementGait);
 }
 
 void AAuraCharacterBase::Die()
@@ -229,6 +249,12 @@ void AAuraCharacterBase::Die()
 TArray<FTaggedMontage> AAuraCharacterBase::GetAttackMontagesInfo_Implementation()
 {
 	return GetCharacterData()->AnimationInfo.AttackMontages;
+}
+
+void AAuraCharacterBase::UpdateCharacterMovementGait_Implementation(const EAuraMovementGait NewMovementGait)
+{
+	CurrentMovementGait = NewMovementGait;
+	GetCharacterMovement()->MaxWalkSpeed = GetMovementData()->FindMovementSpeedByGait(CurrentMovementGait);
 }
 
 void AAuraCharacterBase::InitializeDefaultAttributes() const

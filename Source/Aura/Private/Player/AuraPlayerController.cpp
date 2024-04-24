@@ -14,6 +14,7 @@
 #include "Input/AuraInputComponent.h"
 #include "Interaction/EnemyInterface.h"
 #include "GameFramework/Character.h"
+#include "Interaction/CombatInterface.h"
 #include "UI/Widget/DamageTextComponent.h"
 
 AAuraPlayerController::AAuraPlayerController()
@@ -118,6 +119,17 @@ void AAuraPlayerController::Input_Move(const FInputActionValue& InputActionValue
 	{
 		ControlledPawn->AddMovementInput(ForwardDirection, Value.Y);
 		ControlledPawn->AddMovementInput(RightDirection, Value.X);
+
+		// TODO: If Running, Change this Logic!
+		
+		if (Value.X != 0 || Value.Y != 0)
+		{
+			ICombatInterface::Execute_UpdateCharacterMovementGait(ControlledPawn, EAuraMovementGait::Walking);
+		}
+		else
+		{
+			ICombatInterface::Execute_UpdateCharacterMovementGait(ControlledPawn, EAuraMovementGait::Idle);
+		}
 	}
 }
 
