@@ -57,14 +57,9 @@ void AAuraCharacterBase::OnConstruction(const FTransform& Transform)
 void AAuraCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	// Bind Callback Health Delegates (Progress Bar).
 	BindCallbackHealthBarDelegates();
-
-	GetCharacterMovement()->MaxWalkSpeed = GetMovementData()->FindMovementSpeedByGait(CurrentMovementGait);
-
-	AbilitySystemComponent->RegisterGameplayTagEvent(FAuraGameplayTags::Get().Status_Effect_HitReact,
-		EGameplayTagEventType::NewOrRemoved).AddUObject(this, &AAuraCharacterBase::OnHitReactAbilityActivated);
 }
 
 void AAuraCharacterBase::InitAbilityActorInfo()
@@ -111,6 +106,10 @@ void AAuraCharacterBase::BindCallbackHealthBarDelegates()
 		{
 			OnMaxHealthChanged.Broadcast(Data.NewValue);
 		});
+
+		AbilitySystemComponent->RegisterGameplayTagEvent(
+			FAuraGameplayTags::Get().Status_Effect_HitReact,
+			EGameplayTagEventType::NewOrRemoved).AddUObject(this, &AAuraCharacterBase::OnHitReactAbilityActivated);
 
 		// Broadcast the initial values of Health.
 		OnHealthChanged.Broadcast(AuraAS->GetHealth());
@@ -237,7 +236,9 @@ EAuraCharacterClass AAuraCharacterBase::GetCharacterClass() const
 void AAuraCharacterBase::OnHitReactAbilityActivated(const FGameplayTag CallbackTag, int32 NewCount)
 {
 	bHitReacting = NewCount > 0;
-	bHitReacting ? GetCharacterMovement()->MaxWalkSpeed = 0.f : GetCharacterMovement()->MaxWalkSpeed = GetMovementData()->FindMovementSpeedByGait(CurrentMovementGait);
+	bHitReacting ?
+		GetCharacterMovement()->MaxWalkSpeed = 0.f :
+		GetCharacterMovement()->MaxWalkSpeed = GetMovementData()->FindMovementSpeedByGait(CurrentMovementGait);
 }
 
 void AAuraCharacterBase::Die()

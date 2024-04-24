@@ -72,8 +72,8 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category="Combat")
 	bool bHitReacting = false;
 
-	UPROPERTY(BlueprintReadOnly, Category="Movement", Replicated)
-	EAuraMovementGait CurrentMovementGait = EAuraMovementGait::Idle;
+	UPROPERTY(Replicated, BlueprintReadOnly, Category="Movement")
+	EAuraMovementGait CurrentMovementGait = EAuraMovementGait::Walking;
 	
 protected:
 	virtual void OnConstruction(const FTransform& Transform) override;

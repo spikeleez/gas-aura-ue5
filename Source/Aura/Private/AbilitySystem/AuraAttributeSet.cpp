@@ -246,10 +246,7 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 					CombatInterface->Die();
 				}
 			}
-			else
-			{
-				ActivateHitReactAbilityInTarget(Props, GameplayTags.Abilities_Action_HitReact);
-			}
+			else TryActivateHitReactAbility(Props, GameplayTags.Abilities_Action_HitReact);
 			
 			const bool bBlock = UAuraAbilitySystemLibrary::IsBlockedHit(Props.EffectContextHandle);
 			const bool bCriticalHit = UAuraAbilitySystemLibrary::IsCriticalHit(Props.EffectContextHandle);
@@ -276,10 +273,7 @@ void UAuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData
 				Props.SourceController = Pawn->GetController();
 			}
 		}
-		if (Props.SourceController)
-		{
-			Props.SourceCharacter = Cast<ACharacter>(Props.SourceController->GetPawn());
-		}
+		if (Props.SourceController) Props.SourceCharacter = Cast<ACharacter>(Props.SourceController->GetPawn());
 	}
 
 	if (Data.Target.AbilityActorInfo.IsValid() && Data.Target.AbilityActorInfo->AvatarActor.IsValid())
@@ -291,7 +285,7 @@ void UAuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData
 	}
 }
 
-void UAuraAttributeSet::ActivateHitReactAbilityInTarget(const FAuraEffectProperties& Props, FGameplayTag HitReactTag) const
+void UAuraAttributeSet::TryActivateHitReactAbility(const FAuraEffectProperties& Props, FGameplayTag HitReactTag) const
 {
 	check(Props.TargetASC);
 

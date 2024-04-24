@@ -157,6 +157,7 @@ void AAuraPlayerController::ClickToMove(const FGameplayTag& InputTag, const bool
 			{
 				const FVector WorldDirection = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
 				ControlledPawn->AddMovementInput(WorldDirection);
+				ICombatInterface::Execute_UpdateCharacterMovementGait(ControlledPawn, EAuraMovementGait::Walking);
 			}
 		}
 	}
@@ -173,7 +174,8 @@ void AAuraPlayerController::ClickToMove(const FGameplayTag& InputTag, const bool
 		
 		if (!bTargeting && !bShiftKeyDown)
 		{
-			const APawn* ControlledPawn = GetPawn();
+			APawn* ControlledPawn = GetPawn();
+			ICombatInterface::Execute_UpdateCharacterMovementGait(ControlledPawn, EAuraMovementGait::Idle);
 			if (FollowTime <= ShortPressThreshold && ControlledPawn)
 			{
 				if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(
@@ -188,6 +190,7 @@ void AAuraPlayerController::ClickToMove(const FGameplayTag& InputTag, const bool
 					{
 						CachedDestination = NavPath->PathPoints.Last();
 						bAutoRunning = true;
+						ICombatInterface::Execute_UpdateCharacterMovementGait(ControlledPawn, EAuraMovementGait::Walking);
 					}
 				}
 			}
@@ -205,10 +208,12 @@ void AAuraPlayerController::AutoRun()
 		const FVector LocationOnSpline = Spline->FindLocationClosestToWorldLocation(ControlledPawn->GetActorLocation(), ESplineCoordinateSpace::World);
 		const FVector Direction = Spline->FindDirectionClosestToWorldLocation(LocationOnSpline, ESplineCoordinateSpace::World);
 		ControlledPawn->AddMovementInput(Direction);
+		ICombatInterface::Execute_UpdateCharacterMovementGait(ControlledPawn, EAuraMovementGait::Walking);
 
 		const float DistanceToDestination = (LocationOnSpline - CachedDestination).Length();
 		if (DistanceToDestination <= AutoRunAcceptanceRadius)
 		{
+			ICombatInterface::Execute_UpdateCharacterMovementGait(ControlledPawn, EAuraMovementGait::Idle);
 			bAutoRunning = false;
 		}
 	}
